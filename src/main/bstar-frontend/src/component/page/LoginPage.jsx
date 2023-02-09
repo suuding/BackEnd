@@ -152,7 +152,29 @@ function LoginPage(props) {
                                 }}
                                 href="/oauth2/authorization/google"
                             >
-                                소셜 로그인
+                                구글 로그인
+                            </a>
+                            <a
+                                type="button"
+                                variant="outlined"
+                                sx={{ //css 적용
+                                    mt: 3,
+                                    pr: 11,
+                                    pl: 11,
+                                    color: 'white',
+                                    border: '1px solid skyblue',
+                                    borderRadius: '10px',
+                                    backgroundColor: 'skyblue',
+                                    // "&.Mui[mui이름]-root:[event 속성]" : {}로 기본적으로 적용된 css를 변경시킬 수 있다.
+                                    // "&.MuiButton-root:hover" : {}로 기본적으로 탑재되어있는 css를 바꿈
+                                    "&.MuiButton-root:hover":{
+                                        color: 'skyblue',
+                                        borderColor: 'skyblue'
+                                    }
+                                }}
+                                href="/oauth2/authorization/naver"
+                            >
+                                네이버 로그인
                             </a>
                             {/* Link는 a tag 같은 역할 */}
                             <Link
