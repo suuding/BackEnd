@@ -22,6 +22,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/main").hasRole(Role.USER.name())
                 .anyRequest().permitAll()
                 .and()
+                .oauth2Login().loginPage("/login")
+                .and()
                 .logout()
                 .logoutSuccessUrl("/login")
                 .and()
