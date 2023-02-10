@@ -200,7 +200,7 @@ function SearchPage(props) {
                             offset={offset}
                             pageLimit={pageLimit}
                             onClickItem={(item) => {
-                                navigate(`/post/${item.post_id}`)
+                                navigate(`/post/${item.post_id}`) //searchListItem에서 email을 받아옴
                             }}
                         />  
                         <Pagination count={Math.floor(postCount / pageLimit + 1)} onChange={(e) => setPage(e.target.textContent)} color="primary" variant="outlined" sx={{margin: '20px'}}/>
