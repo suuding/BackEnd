@@ -6,7 +6,7 @@ function SearchListItem(props) {
     const {post, onClick} = props;
 
     const person = data.find((person) => {
-        return person.id === post.id;
+        return person.email === post.email;
     });
 
     return (
