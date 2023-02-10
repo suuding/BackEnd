@@ -17,37 +17,23 @@ const StyledTableCell = styled(TableCell)(({theme}) => ({
       },
 }))
 
-const friendList = [
-    "2@gmail.com",
-    "3@gmail.com",
-    "4@gmail.com",
-];
-
-
 function SettingPage(props) {
-    const [info, setInfo] = useState([]);
-    const [email, setEmail] = useState();
-    const [inputs, setInputs] = useState([]);
-    const {blogName, nickName, introduction, image, music, friends} = inputs;
+    const id = "4"; //임시로 설정
 
-    useEffect(() => {
-        axios.get('/setting/info')
-            .then(response => setInfo(response.data))
-            .catch(error => console.log(error, info))
-    }, []);
+    const person = data.find((person) => {
+        return person.id === id;
+    })
 
-    useEffect(() => {
-        setEmail(info.email);
-        setInputs({
-            blogName: info.title,
-            nickName: info.nickname,
-            introduction: info.intro,
-            image: info.image,
-            music: info.music,
-            friends: friendList, //받아온 friends를 넣어줌
-        });
-        console.log(email);
-    }, [info])
+    const [inputs, setInputs] = useState({
+        blogName: person.blogName,
+        nickName: person.nickName,
+        introduction: person.introduction,
+        image: person.image,
+        music: person.music,
+        friends: person.friends, 
+    })
+
+    const [selected, setSelected] = useState([]);
 
     const onChangeInputs = (e) => {
         const {value, name} = e.target;
@@ -66,38 +52,33 @@ function SettingPage(props) {
         });
     }
     
-    const onUploadImage = (e) => {
-        //등록 버튼을 누르면 image 등록
+    const onUploadImage = () => {
+
     }
 
     const onChangeData = () => {
-        //수정 버튼을 누르면 데이터가 수정됨
-        //inputs을 전송
+        
     }
 
-    const [selected, setSelected] = useState([]);
-
-    //이웃 정보 전체 선택
     const onSelectAllClick = (e) => {
         if (e.target.checked) {
-            const newSelected = friends;
+            const newSelected = inputs.friends;
             setSelected(newSelected);
             return;
           }
           setSelected([]);
     }
 
-    //이웃 정보 개별 선택
-    const onSelectClick = (email) => {
-        const selectedIndex = selected.indexOf(email);
+    const onSelectClick = (id) => {
+        const selectedIndex = selected.indexOf(id);
         let newSelected = [];
 
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, email);
+        newSelected = newSelected.concat(selected, id);
         } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
+        newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
+        newSelected = newSelected.concat(selected.slice(0, -1));
         } else if (selectedIndex > 0) {
             newSelected = newSelected.concat(
                 selected.slice(0, selectedIndex),
@@ -107,11 +88,18 @@ function SettingPage(props) {
         setSelected(newSelected);
     }
 
+    const [info, setInfo] = useState([]);
+
+        useEffect(() => {
+            axios.get('/setting/info')
+            .then(response => setInfo(response.data))
+            .catch(error => console.log(error))
+        }, []);
+
     const isSelected = (nickName) => selected.indexOf(nickName) !== -1;
     
     const onRemoveData = () => {
-        //삭제 버튼을 누르면 선택한 이웃 정보가 삭제됨
-        //selected 배열에 삭제를 위해 선택된 이웃 아이디가 담김
+
     }
 
     return (
@@ -138,24 +126,24 @@ function SettingPage(props) {
                             <label style={{color: 'rgba(0,0,0,0.80)', marginBottom: '10px'}}>블로그 명</label>
                             <OutlinedInput
                                 name="blogName"
-                                value={blogName}
-                                onChange={(e) => onChangeInputs(e)}
+                                value={info.title}
+                                onChange={onChangeInputs}
                             />
                         </FormControl>
                         <FormControl sx={{margin: '20px 0'}}>
                             <label style={{color: 'rgba(0,0,0,0.80)', marginBottom: '10px'}}>별명</label>
-                            <OutlinedInput
+                            <OutlinedInput 
                                 name="nickName"
-                                value={nickName}
-                                onChange={(e) => onChangeInputs(e)}
+                                value={info.nickname}
+                                onChange={onChangeInputs}
                             />
                         </FormControl>
                         <FormControl sx={{margin: '20px 0'}}>
                             <label style={{color: 'rgba(0,0,0,0.80)', marginBottom: '10px'}}>프로필 소개글</label>
-                            <OutlinedInput
+                            <OutlinedInput 
                                 name="introduction"
-                                value={introduction}
-                                onChange={(e) => onChangeInputs(e)}
+                                value={info.intro}
+                                onChange={onChangeInputs}
                             />
                         </FormControl>
                         <FormControl sx={{margin: '20px 0'}}>
@@ -165,26 +153,26 @@ function SettingPage(props) {
                                     name="image"
                                     accept="image/*"
                                     type="file"
-                                    onChange={(e) => onInputImage(e)}
+                                    onChange={onInputImage}
                                     id="image-button"
                                     style={{display: 'none'}}
                                 />
                                 <div>
-                                    {image? (<img src={URL.createObjectURL(image[0])} alt="profileImage" width= '160px' height= '160px'/>)
+                                    {inputs.image? (<img src={URL.createObjectURL(inputs.image[0])} alt="profileImage" width= '160px' height= '160px'/>) 
                                     : (<Box sx={{width: '160px', height: '160px', border: '1px solid rgba(0,0,0,0.25)', borderRadius: '5px'}}></Box>)}
                                 </div>
                                 <label htmlFor="image-button">
-                                    <Button component="span" variant="outlined" onClick={() => onUploadImage()} sx={{margin: '0 10px'}}>등록</Button>
-                                </label>
+                                    <Button component="span" variant="outlined" onClick={onUploadImage} sx={{margin: '0 10px'}}>등록</Button>
+                                </label>                
                             </Box>
                         </FormControl>
                         <FormControl sx={{marginTop: '20px'}}>
                             <label style={{color: 'rgba(0,0,0,0.80)', marginBottom: '10px'}}>프로필 음악</label>
-                            <OutlinedInput
+                            <OutlinedInput 
                                 name="music"
-                                value={music}
-                                onChange={(e) => onChangeInputs(e)}
-                            />
+                                value={inputs.music}
+                                onChange={onChangeInputs}
+                            /> 
                         </FormControl>
                     </Box> 
                     <Button variant="outlined" onClick={onChangeData}>수정</Button>
@@ -203,27 +191,27 @@ function SettingPage(props) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {friends && friends.map((friend) => {
-                                    const newFriend = data.find((p) => { //아이디 주인의 친구를 찾기
-                                        return friend === p.email;
+                                {inputs.friends.map((friend) => {
+                                    const newFriend = data.find((person) => {
+                                        return friend === person.id;
                                     });
-                                    const isItemSelected = isSelected(newFriend.email);
+                                    const isItemSelected = isSelected(newFriend.id);
                                     return(
-                                        <TableRow
-                                            key={newFriend.nickName}
+                                        <TableRow 
+                                            key={newFriend.nickName} 
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
-                                            onClick={() => onSelectClick(newFriend.email)}
+                                            onClick={() => onSelectClick(newFriend.id)}
                                             selected={isItemSelected}
                                         >
                                             <StyledTableCell>
                                                 <Checkbox checked={isItemSelected}/>
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                                {newFriend.nickName}
+                                                {newFriend.nickName} 
                                             </StyledTableCell>
                                         </TableRow>
-                                    );
+                                    ); 
                                 })}
                             </TableBody>
                         </Table>

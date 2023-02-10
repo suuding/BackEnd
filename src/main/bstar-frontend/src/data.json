@@ -1,20 +1,6 @@
 [
     {
-        "email": "0805gh@pusan.ac.kr",
-        "blogName":"hhh의 미니 블로그",
-        "nickName": "hhh",
-        "introduction":"h.h",
-        "image":"",
-        "music":"",
-        "newState": true,
-        "friends":[
-            "2@gmail.com",
-            "3@gmail.com",
-            "4@gmail.com"
-        ]
-    },
-    {
-        "email": "1@gmail.com",
+        "id": "1",
         "blogName":"씅1의 미니 블로그",
         "nickName": "씅1",
         "introduction":"a",
@@ -22,13 +8,13 @@
         "music":"",
         "newState": true,
         "friends":[
-            "2@gmail.com",
-            "3@gmail.com",
-            "4@gmail.com"
+            "2",
+            "3",
+            "4"
         ]
     },
     {
-        "email": "2@gmail.com",
+        "id": "2",
         "blogName":"soso1 미니 블로그",
         "nickName": "soso1",
         "introduction":"soso1",
@@ -36,13 +22,13 @@
         "music":"",
         "newState": true,
         "friends":[
-            "1@gmail.com",
-            "3@gmail.com",
-            "7@gmail.com"
+            "1",
+            "3",
+            "7"
         ]
     },
     {
-        "email": "3@gmail.com",
+        "id": "3",
         "blogName":"경혜은1 미니 블로그",
         "nickName": "경혜은1",
         "introduction":"경혜은1~",
@@ -50,13 +36,13 @@
         "music":"",
         "newState": true,
         "friends":[
-            "2@gmail.com",
-            "5@gmail.com",
-            "6@gmail.com"
+            "2",
+            "5",
+            "6"
         ]
     },
     {
-        "email": "4@gmail.com",
+        "id": "4",
         "blogName":"ㄱㅎ1 미니 블로그",
         "nickName": "ㄱㅎ1",
         "introduction":"ㄱㅎ1~",
@@ -64,14 +50,14 @@
         "music":"",
         "newState": false,
         "friends":[
-            "1@gmail.com",
-            "2@gmail.com",
-            "3@gmail.com",
-            "10@gmail.com"
+            "1",
+            "2",
+            "3",
+            "10"
         ]
     },
     {
-        "email": "5@gmail.com",
+        "id": "5",
         "blogName":"주히 미니 블로그",
         "nickName": "주히",
         "introduction":"주히~",
@@ -79,13 +65,13 @@
         "music":"",
         "newState": true,
         "friends":[
-            "1@gmail.com",
-            "3@gmail.com",
-            "4@gmail.com"
+            "1",
+            "3",
+            "4"
         ]
     },
     {
-        "email": "6@gmail.com",
+        "id": "6",
         "blogName":"수딩 미니 블로그",
         "nickName": "수딩",
         "introduction":"수딩~",
@@ -93,12 +79,12 @@
         "music":"",
         "newState": false,
         "friends":[
-            "9@gmail.com",
-            "10@gmail.com"
+            "9",
+            "10"
         ]
     },
     {
-        "email": "7@gmail.com",
+        "id": "7",
         "blogName":">은서.< 미니 블로그",
         "nickName": ">은서.<",
         "introduction":">은서.<~",
@@ -106,13 +92,13 @@
         "music":"",
         "newState": true,
         "friends":[
-            "1@gmail.com",
-            "3@gmail.com",
-            "4@gmail.com"
+            "1",
+            "3",
+            "4"
         ]
     },
     {
-        "email": "8@gmail.com",
+        "id": "8",
         "blogName":"chaee 미니 블로그",
         "nickName": "chaee",
         "introduction":"chaee~",
@@ -120,12 +106,12 @@
         "music":"",
         "newState": true,
         "friends":[
-            "6@gmail.com",
-            "7@gmail.com"
+            "6",
+            "7"
         ]
     },
     {
-        "email": "9@gmail.com",
+        "id": "9",
         "blogName":"경혜은2 미니 블로그",
         "nickName": "경혜은2",
         "introduction":"경혜은2~",
@@ -133,12 +119,12 @@
         "music":"",
         "newState": false,
         "friends":[
-            "2@gmail.com",
-            "5@gmail.com"
+            "2",
+            "5"
         ]
     },
     {
-        "email": "10@gmail.com",
+        "id": "10",
         "blogName":"ㄱㅎ2 미니 블로그",
         "nickName": "ㄱㅎ2",
         "introduction":"ㄱㅎ2~",
@@ -146,9 +132,9 @@
         "music":"",
         "newState": false,
         "friends":[
-            "4@gmail.com",
-            "5@gmail.com",
-            "8@gmail.com"
+            "4",
+            "5",
+            "8"
         ]
     }
 ]
