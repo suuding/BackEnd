@@ -24,14 +24,26 @@ function SettingPage(props) {
         return person.id === id;
     })
 
-    const [inputs, setInputs] = useState({
-        blogName: person.blogName,
-        nickName: person.nickName,
-        introduction: person.introduction,
-        image: person.image,
-        music: person.music,
-        friends: person.friends, 
-    })
+    const [info, setInfo] = useState([]);
+    const [inputs, setInputs] = useState([]);
+    const {blogName, nickName, introduction, image, music, friends} = inputs;
+
+    useEffect(() => {
+        axios.get('/setting/info')
+        .then(response => setInfo(response.data))
+        .catch(error => console.log(error))
+    }, []);
+
+    useEffect(() => {
+        setInputs({
+            blogName: info.blogName,
+            nickName: info.nickName,
+            introduction: info.introduction,
+            image: info.image,
+            music: info.music,
+            friends: [1,2,3],
+        });
+    }, [info]);
 
     const [selected, setSelected] = useState([]);
 
@@ -56,8 +68,27 @@ function SettingPage(props) {
 
     }
 
-    const onChangeData = () => {
-        
+    const onChangeData = (e) => {
+//         e.preventDefault();
+//         const params = new URLSearchParams();
+//
+//         params.append('blogName', blogName);
+//         params.append('nickName', nickName);
+//         params.append('introduction', introduction);
+//
+//         axios.put('/setting/info', params);
+        axios.put('/setting/info', {
+                blogName: blogName,
+                nickName: nickName,
+                introduction: introduction
+            })
+            .then(function (response) {
+                 alert("수정되었습니다.");
+            }).catch(function (error) {
+                alert(error);
+            }).then(function() {
+                // 항상 실행
+            });
     }
 
     const onSelectAllClick = (e) => {
@@ -87,14 +118,6 @@ function SettingPage(props) {
         }
         setSelected(newSelected);
     }
-
-    const [info, setInfo] = useState([]);
-
-        useEffect(() => {
-            axios.get('/setting/info')
-            .then(response => setInfo(response.data))
-            .catch(error => console.log(error))
-        }, []);
 
     const isSelected = (nickName) => selected.indexOf(nickName) !== -1;
     
@@ -126,7 +149,7 @@ function SettingPage(props) {
                             <label style={{color: 'rgba(0,0,0,0.80)', marginBottom: '10px'}}>블로그 명</label>
                             <OutlinedInput
                                 name="blogName"
-                                value={info.title}
+                                value={blogName}
                                 onChange={onChangeInputs}
                             />
                         </FormControl>
@@ -134,7 +157,7 @@ function SettingPage(props) {
                             <label style={{color: 'rgba(0,0,0,0.80)', marginBottom: '10px'}}>별명</label>
                             <OutlinedInput 
                                 name="nickName"
-                                value={info.nickname}
+                                value={nickName}
                                 onChange={onChangeInputs}
                             />
                         </FormControl>
@@ -142,7 +165,7 @@ function SettingPage(props) {
                             <label style={{color: 'rgba(0,0,0,0.80)', marginBottom: '10px'}}>프로필 소개글</label>
                             <OutlinedInput 
                                 name="introduction"
-                                value={info.intro}
+                                value={introduction}
                                 onChange={onChangeInputs}
                             />
                         </FormControl>
@@ -158,7 +181,7 @@ function SettingPage(props) {
                                     style={{display: 'none'}}
                                 />
                                 <div>
-                                    {inputs.image? (<img src={URL.createObjectURL(inputs.image[0])} alt="profileImage" width= '160px' height= '160px'/>) 
+                                    {image? (<img src={URL.createObjectURL(image[0])} alt="profileImage" width= '160px' height= '160px'/>)
                                     : (<Box sx={{width: '160px', height: '160px', border: '1px solid rgba(0,0,0,0.25)', borderRadius: '5px'}}></Box>)}
                                 </div>
                                 <label htmlFor="image-button">
@@ -170,7 +193,7 @@ function SettingPage(props) {
                             <label style={{color: 'rgba(0,0,0,0.80)', marginBottom: '10px'}}>프로필 음악</label>
                             <OutlinedInput 
                                 name="music"
-                                value={inputs.music}
+                                value={music}
                                 onChange={onChangeInputs}
                             /> 
                         </FormControl>
@@ -191,7 +214,7 @@ function SettingPage(props) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {inputs.friends.map((friend) => {
+                                {person.friends.map((friend) => {
                                     const newFriend = data.find((person) => {
                                         return friend === person.id;
                                     });

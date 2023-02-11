@@ -17,26 +17,26 @@ public class Settings extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String title;
+    private String blogName;
     @Column(nullable = false)
-    private String nickname;
+    private String nickName;
 
-    private String intro;
+    private String introduction;
 
     private String email;
 
     @Builder
-    public Settings(String title, String nickname, String intro, String email) {
-        this.title = title;
-        this.nickname = nickname;
-        this.intro = intro;
+    public Settings(String blogName, String nickName, String introduction, String email) {
+        this.blogName = blogName;
+        this.nickName = nickName;
+        this.introduction = introduction;
         this.email = email;
     }
 
-    public void update(String title, String nickname, String intro) {
-        this.title = title;
-        this.nickname = nickname;
-        this.intro = intro;
+    public void update(String blogName, String nickName, String introduction) {
+        this.blogName = blogName;
+        this.nickName = nickName;
+        this.introduction = introduction;
     }
 
 }

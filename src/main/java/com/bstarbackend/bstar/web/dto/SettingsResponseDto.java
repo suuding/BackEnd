@@ -5,17 +5,13 @@ import lombok.Getter;
 
 @Getter
 public class SettingsResponseDto {
-    private String title;
-    private String nickname;
-
-    private String intro;
-
-    private String email;
+    private String blogName;
+    private String nickName;
+    private String introduction;
 
     public SettingsResponseDto(Settings entity) {
-        this.title = entity.getTitle();
-        this.nickname = entity.getNickname();
-        this.intro = entity.getIntro();
-        this.email = entity.getEmail();
+        this.blogName = entity.getBlogName();
+        this.nickName = entity.getNickName();
+        this.introduction = entity.getIntroduction();
     }
 }
