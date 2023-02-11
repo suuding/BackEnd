@@ -7,6 +7,7 @@ import { Button } from '@mui/material';
 import { CountertopsSharp } from "@mui/icons-material";
 import DetailList from "../list/DetailList"
 import { Input } from "antd"
+import axios from "axios";
 
 //화면의 중앙에 위치시킴
 const Wrapper = styled.div`
@@ -82,6 +83,23 @@ function WritePage(props) {
         setCountList(countArr)
     }
 
+    function onWrite() {
+        axios ({
+            url: '/posts',
+            method: 'post',
+            data: {
+                title: title,
+                content: content
+            }
+        }).then((res) => {
+            alert("글을 등록하였습니다");
+            console.log(res.data);
+            window.location.href='/main';
+        }).catch(error=> {
+            console.log("실패");
+        });
+    }
+
     return (
         <Wrapper>
             <Container>
@@ -136,7 +154,7 @@ function WritePage(props) {
                 }}>임시 저장</Button>
 
                 <Button 
-                type="submit" 
+                type="button"
                 variant="outlined" 
                 sx={{ //css 적용
                     mt: 3,
@@ -153,9 +171,7 @@ function WritePage(props) {
                     borderColor: 'skyblue'
                     }
                 }}
-                onClick={() => {
-                    navigate("/main");
-                }}>글 올리기</Button>
+                onClick={onWrite}>글 올리기</Button>
 
                 <CommentBox></CommentBox>
                 
