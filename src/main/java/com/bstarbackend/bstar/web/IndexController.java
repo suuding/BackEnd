@@ -30,11 +30,11 @@ public class IndexController {
         return "main";
     }
 
-    @GetMapping("/posts/save")
+    @GetMapping("/write")
     public String postsSave() {
 
         //게시글 작성하는 페이지
-        return "posts-save";
+        return "WritePage";
     }
 
     @GetMapping("/posts/update/{id}")

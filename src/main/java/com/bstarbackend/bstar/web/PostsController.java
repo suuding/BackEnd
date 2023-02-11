@@ -20,6 +20,8 @@ public class PostsController {
     //글 등록
     @PostMapping("/posts")
     public Long save(@RequestBody PostsSaveRequestDto requestDto) {
+        System.out.println(requestDto);
+
         return postsService.save(requestDto);
     }
 
