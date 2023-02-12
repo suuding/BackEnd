@@ -4,24 +4,24 @@ import com.bstarbackend.bstar.domain.setting.Settings;
 import lombok.Builder;
 
 public class SettingsSaveRequestDto {
-    private String title;
-    private String nickname;
+    private String blogName;
+    private String nickName;
 
-    private String intro;
+    private String introduction;
     private String email;
 
     @Builder
-    public SettingsSaveRequestDto(String title, String nickname, String intro, String email) {
-        this.title = title;
-        this.nickname = nickname;
-        this.intro = intro;
+    public SettingsSaveRequestDto(String blogName, String nickName, String introduction, String email) {
+        this.blogName = blogName;
+        this.nickName = nickName;
+        this.introduction = introduction;
         this.email = email;
     }
     public Settings toEntity() {
         return Settings.builder()
-                .title(title)
-                .nickname(nickname)
-                .intro(intro)
+                .blogName(blogName)
+                .nickName(nickName)
+                .introduction(introduction)
                 .email(email)
                 .build();
     }
