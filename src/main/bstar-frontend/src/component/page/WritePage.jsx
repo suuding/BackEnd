@@ -191,8 +191,6 @@ function WritePage(props) {
                         }}
                         onClick={onWrite}>글 올리기</Button>
 
-                    <CommentBox></CommentBox>
-
                 </Container>
             </Wrapper>
         );

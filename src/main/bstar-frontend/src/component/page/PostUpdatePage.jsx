@@ -167,25 +167,6 @@ function PostUpdatePage(props) {
                         }}
                         onClick={onDelete}>삭제하기</Button>
 
-                    <Button
-                        type="button"
-                        variant="outlined"
-                        sx={{ //css 적용
-                            mt: 3,
-                            pr: 11,
-                            pl: 11,
-                            color: 'white',
-                            border: '1px solid skyblue',
-                            borderRadius: '10px',
-                            backgroundColor: 'skyblue',
-                            // "&.Mui[mui이름]-root:[event 속성]" : {}로 기본적으로 적용된 css를 변경시킬 수 있다.
-                            // "&.MuiButton-root:hover" : {}로 기본적으로 탑재되어있는 css를 바꿈
-                            "&.MuiButton-root:hover": {
-                                color: 'skyblue',
-                                borderColor: 'skyblue'
-                            }
-                        }}
-                        onClick={onUpdate}>삭제하기</Button>
                 </Container>
             </Wrapper>
         );

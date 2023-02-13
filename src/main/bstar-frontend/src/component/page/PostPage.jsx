@@ -66,14 +66,18 @@ function PostPage(props) {
         return (
             <Wrapper>
                 <Container>
-                    <TextArea
-                        type="text" value={title}
+                    <label for="title">제목</label>
+                    <h1
+                        value={title} id="title"
                         autoSize={{minRows: 1, maxRows: 1}}>
-                    </TextArea>
-                    <TextArea
-                        type="text" value={content}
+                        {title}
+                    </h1>
+                    <label For="content">내용</label>
+                    <p
+                        value={content} id="content"
                         autoSize={{minRows: 1, maxRows: 1}}>
-                    </TextArea>
+                        {content}
+                    </p>
 
                     <Button
                         sx={{ //css 적용
@@ -95,6 +99,9 @@ function PostPage(props) {
                             navigate("/posts/update/"+postId);
                         }}>글 수정
                     </Button>
+
+                    <CommentBox></CommentBox>
+
                 </Container>
             </Wrapper>
         );
