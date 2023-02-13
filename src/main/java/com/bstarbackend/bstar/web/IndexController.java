@@ -30,20 +30,12 @@ public class IndexController {
         return "main";
     }
 
-    @GetMapping("/write")
-    public String postsSave() {
-
-        //게시글 작성하는 페이지
-        return "WritePage";
-    }
-
     @GetMapping("/posts/update/{id}")
     public String postsUpdate(@PathVariable Long id, Model model) {
         PostsResponseDto dto = postsService.findById(id);
         model.addAttribute("post", dto);
 
         //게시글 수정하는 페이지
-        return "posts-update";
+        return "redirect:/PostUpdatePage";
     }
-
 }
