@@ -5,8 +5,10 @@ import com.bstarbackend.bstar.domain.user.Users;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class PostsSaveRequestDto {
 
@@ -14,10 +16,10 @@ public class PostsSaveRequestDto {
 
     private String content;
 
-    private Users user;
+    private String user;
 
     @Builder
-    public PostsSaveRequestDto(String title, String content, Users user) {
+    public PostsSaveRequestDto(String title, String content, String user) {
         this.title=title;
         this.content=content;
         this.user=user;

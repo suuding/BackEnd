@@ -10,7 +10,7 @@ public class PostsResponseDto {
     private Long id;
     private String title;
     private String content;
-    private Users user;
+    private String user;
 
     public PostsResponseDto(Posts entity) {
         this.id=entity.getId();
