@@ -25,6 +25,7 @@ function SettingPage(props) {
     })
 
     const [info, setInfo] = useState([]);
+    const [friend, setFriends] = useState([]);
     const [inputs, setInputs] = useState([]);
     const {blogName, nickName, introduction, image, music, friends} = inputs;
 
@@ -35,13 +36,20 @@ function SettingPage(props) {
     }, []);
 
     useEffect(() => {
+           axios.get('/setting/friends')
+           .then(response => setFriends(response.data))
+           .catch(error => console.log(error))
+       }, []);
+
+
+    useEffect(() => {
         setInputs({
             blogName: info.blogName,
             nickName: info.nickName,
             introduction: info.introduction,
             image: info.image,
             music: info.music,
-            friends: [1,2,3],
+            friends: "하아....",
         });
     }, [info]);
 
@@ -206,6 +214,7 @@ function SettingPage(props) {
                     <TableContainer component={Paper} sx={{margin: "30px 0", width: '40%'}}>
                         <Table aria-label="simple table" size="small">
                             <TableHead>
+
                                 <TableRow>
                                     <StyledTableCell>
                                         <Checkbox onChange={onSelectAllClick}/>
@@ -214,6 +223,11 @@ function SettingPage(props) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
+                                <OutlinedInput
+                                    name="friends"
+                                    value={friend}
+                                    onChange={onChangeInputs}
+                                />
                                 {person.friends.map((friend) => {
                                     const newFriend = data.find((person) => {
                                         return friend === person.id;

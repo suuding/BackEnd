@@ -1,6 +1,7 @@
 package com.bstarbackend.bstar.web;
 
 import com.bstarbackend.bstar.service.SettingsService;
+import com.bstarbackend.bstar.web.dto.SettingFriendsResponseDto;
 import com.bstarbackend.bstar.web.dto.SettingUpdateRequestDto;
 import com.bstarbackend.bstar.web.dto.SettingsResponseDto;
 import org.springframework.security.core.Authentication;
@@ -26,5 +27,19 @@ public class SettingController {
     public void update(Authentication authentication, @RequestBody SettingUpdateRequestDto requestDto) {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         settingsService.update(oAuth2User.getAttribute("email"), requestDto);
+    }
+
+
+    @GetMapping("/setting/friends")
+    public SettingFriendsResponseDto showFriends(Authentication authentication, @AuthenticationPrincipal UserDetails userDetails){
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        SettingFriendsResponseDto friends = settingsService.findByMyEmail(oAuth2User.getAttribute("email"));
+        return friends;
+    }
+
+
+    @GetMapping("/setting/delete")
+    public void deleteFriends(Authentication authentication, @AuthenticationPrincipal UserDetails userDetails){
+
     }
 }
