@@ -10,7 +10,6 @@ public class BstarApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BstarApplication.class, args);
-
 	}
 
 }

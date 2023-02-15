@@ -2,9 +2,9 @@ package com.bstarbackend.bstar.service;
 
 import com.bstarbackend.bstar.domain.setting.Settings;
 import com.bstarbackend.bstar.domain.setting.SettingsRepository;
-import com.bstarbackend.bstar.domain.user.Friends;
-import com.bstarbackend.bstar.domain.user.FriendsRepository;
-import com.bstarbackend.bstar.web.dto.*;
+import com.bstarbackend.bstar.web.dto.SettingUpdateRequestDto;
+import com.bstarbackend.bstar.web.dto.SettingsResponseDto;
+import com.bstarbackend.bstar.web.dto.SettingsSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SettingsService {
     private final SettingsRepository settingsRepository;
-    private final FriendsRepository friendsRepository;
 
     @Transactional
     public Settings save(String nickName, String email) {
@@ -32,17 +31,6 @@ public class SettingsService {
         return email;
     }
 
-    @Transactional
-    public Friends saveFriend(String myEmail, String friendName, String friendEmail) {
-        /*
-        String myEmail = "chaee813@gmail.com";
-        String friendName = "앙서";
-        String friendEmail = "merry0920@gmail.com";
-        */
-        SettingFriendsRequestDto requestDto = new SettingFriendsRequestDto(myEmail, friendName, friendEmail);
-        friendsRepository.save(requestDto.toEntity());
-        return requestDto.toEntity();
-    }
     @Transactional(readOnly = true)
     public SettingsResponseDto findByEmail(String nickName, String email) {
         Settings entity = settingsRepository.findByEmail(email)
@@ -50,13 +38,4 @@ public class SettingsService {
 
         return new SettingsResponseDto(entity);
     }
-
-    @Transactional(readOnly = true)
-    public SettingFriendsResponseDto findByMyEmail(String myEmail){
-        Friends entity = friendsRepository.findByMyEmail(myEmail)
-                .orElseGet(()-> saveFriend(myEmail,"앙서","merry0920@gmail.com"));
-
-        return new SettingFriendsResponseDto(entity);
-    }
-
 }
