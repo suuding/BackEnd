@@ -35,7 +35,7 @@ function MainPage(props) {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        axios.get("http://localhost:8080/posts/list")
+        axios.get("http://localhost:8080/api/posts/list")
             .then(res => {
                 setData(res.data);
             })

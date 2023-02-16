@@ -42,31 +42,18 @@ const { TextArea } = Input
 
 function PostUpdatePage(props) {
 
-    const navigate = useNavigate();
-
-    const {postId} = useParams();
-
     const [data, setData] = useState(null);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [img, setImg] = useState("");
 
-    // [0, 1, 2, 3]
-    const [countList, setCountList] = useState([0]);
+    const {postId} = useParams();
+    const url = "http://localhost:8080/api/posts/"+postId;
 
     const onAddWrite = () => {
-        let countArr = [...countList]
-        let counter = countArr.slice(-1)[0]
-        counter += 1
-        countArr.push(counter)
-        setCountList(countArr)
-        console.log(counter)
-        console.log(countArr)
-        console.log(countArr[counter - 1])
-        console.log(countList[counter - 1])
     }
 
-    const url = "http://localhost:8080/posts/"+postId;
+
 
     useEffect(() => {
         axios.get(url)
@@ -105,7 +92,7 @@ function PostUpdatePage(props) {
             console.log("글 삭제에 실패하였습니다.");
         });
     }
-
+    if (data) {
         return (
             <Wrapper>
                 <Container>
@@ -121,9 +108,6 @@ function PostUpdatePage(props) {
                             setContent(e.target.value);
                         }}
                         autoSize={{minRows: 1, maxRows: 1}}/>
-                    <CreateListDiv>
-                        <DetailList countList={countList}/>
-                    </CreateListDiv>
 
 
                     <Button
@@ -170,7 +154,7 @@ function PostUpdatePage(props) {
                 </Container>
             </Wrapper>
         );
-
+    }
 }
 
 export default PostUpdatePage;

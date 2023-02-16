@@ -45,7 +45,7 @@ function PostPage(props) {
     const navigate = useNavigate();
 
     const {postId} = useParams();
-    const url = "http://localhost:8080/posts/"+postId;
+    const url = "http://localhost:8080/api/posts/"+postId;
 
 
     const [data, setData] = useState(null);

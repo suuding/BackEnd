@@ -29,13 +29,4 @@ public class IndexController {
         //로그인 한 main 페이지 보여줌
         return "main";
     }
-
-    @GetMapping("/posts/update/{id}")
-    public String postsUpdate(@PathVariable Long id, Model model) {
-        PostsResponseDto dto = postsService.findById(id);
-        model.addAttribute("post", dto);
-
-        //게시글 수정하는 페이지
-        return "redirect:/PostUpdatePage";
-    }
 }
