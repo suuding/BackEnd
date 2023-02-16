@@ -1,18 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Box } from '@mui/material';
 import { Grid } from '@mui/material';
 import { Button } from '@mui/material';
 import ContentBox from "./ContentBox";
 import HiddenContentBox from "./HiddenContentBox";
-import img from '../page/main/images';
-import { OndemandVideoTwoTone, PostAddOutlined } from "@mui/icons-material";
-import postData from "../../postData.json";
-import { useParams } from "react-router-dom";
-import CommentBox from "./CommentBox";
+import img from '../../page/main/images';
+import CommentBox from "../CommentBox"
+import postData from "../../../postData.json";
 
-import ProfileImage from './ProfileImage';
-import MusicBox from "./MusicBox";
-
+import ProfileImage from '../ProfileImage';
+import MusicBox from "../MusicBox";
+import ProfileContents from "../ProfileContents";
+import YouTubePlayer from "../YoutubePlayer";
 
 function ContentGrid(){
 
@@ -38,10 +37,6 @@ function ContentGrid(){
     }
 
     
-
-
-
-
 
     /* 나중에 서버통신할 때 사용
     const [posts, setPosts] = useState([]); 
@@ -81,8 +76,9 @@ function ContentGrid(){
                             profile
 
                             <ProfileImage/>     {/* 프사 */}
-
+                            <ProfileContents/>
                             <MusicBox />
+                            <YouTubePlayer/>
                            
 
                         </Box>
@@ -139,10 +135,10 @@ function ContentGrid(){
                         >
                             X
                         </Button>
+                        <div style={{display: 'flex'}}>
                         <HiddenContentBox data={data}></HiddenContentBox>
                         <CommentBox data={postData}></CommentBox>
-                        
-                        
+                        </div>
                     </Box>
                 </Grid>
             }

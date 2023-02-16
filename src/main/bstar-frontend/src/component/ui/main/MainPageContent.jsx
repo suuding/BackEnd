@@ -1,18 +1,19 @@
 import React from 'react';
-import Sidebar from '../page/Sidebar';
+import Sidebar from '../../page/Sidebar';
 import {Box} from '@mui/material';
 import ContentGrid from './ContentGrid';
-import CommentList from "../list/CommentList";
+import './MainPageContent.css';
 
 
 function MainPageContent(props) {
-    return (
+    return ( //로그아웃 버튼 만들기
         <Box
+            className="box"
             sx={{
                 width: '172%',
-                height: '85vh',
+                height: '90vh',
                 border: '1px solid skyblue',
-                padding: '4.5%',
+                padding: '3%',
                 paddingBottom: '1%',
                 marginTop: props.style
             }}

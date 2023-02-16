@@ -1,7 +1,5 @@
 package com.bstarbackend.bstar.web;
 
-import com.bstarbackend.bstar.config.auth.dto.LoginUser;
-import com.bstarbackend.bstar.config.auth.dto.SessionUser;
 import com.bstarbackend.bstar.service.PostsService;
 import com.bstarbackend.bstar.web.dto.PostsListResponseDto;
 import com.bstarbackend.bstar.web.dto.PostsResponseDto;
@@ -9,8 +7,6 @@ import com.bstarbackend.bstar.web.dto.PostsSaveRequestDto;
 import com.bstarbackend.bstar.web.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.method.P;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +17,6 @@ import java.util.List;
 public class PostsController {
 
     private final PostsService postsService;
-
 
     //글 등록
     @PostMapping("/posts")

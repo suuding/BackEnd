@@ -16,21 +16,26 @@ public class Pictures {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "postId")
-    private Posts postid;
+    //@ManyToOne
+    //@JoinColumn(name = "postId")
+    @Column(nullable = false)
+    private Long postId;
+    @Column(length=500)
+    private String pictureUrl;
 
     @Column(length=1000)
-    private String content;
+    private String pictureContent;
 
     @Builder
-    public Pictures(Posts postid, String content) {
-        this.postid=postid;
-        this.content=content;
+    public Pictures(Long postId, String pictureUrl, String pictureContent) {
+        this.postId=postId;
+        this.pictureUrl=pictureUrl;
+        this.pictureContent=pictureContent;
     }
 
-    public void update(String content) {
-        this.content=content;
+    public void update(String pictureUrl, String pictureContent) {
+        this.pictureUrl=pictureUrl;
+        this.pictureContent=pictureContent;
     }
 
 }

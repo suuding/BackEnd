@@ -1,5 +1,6 @@
 package com.bstarbackend.bstar.service;
 
+import com.bstarbackend.bstar.domain.pictures.PicturesRepository;
 import com.bstarbackend.bstar.domain.posts.Posts;
 import com.bstarbackend.bstar.domain.posts.PostsRepository;
 import com.bstarbackend.bstar.web.dto.PostsListResponseDto;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class PostsService {
 
     private final PostsRepository postsRepository;
+    private final PicturesRepository picturesRepository;
 
     @Transactional
     public Long save(PostsSaveRequestDto requestDto) {

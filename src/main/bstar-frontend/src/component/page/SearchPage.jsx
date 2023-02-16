@@ -1,143 +1,129 @@
 import React, {useState, useEffect} from 'react';
 import Sidebar from './Sidebar';
-import {Box,InputBase, ListItem, Tab, Tabs, Select, Typography, FormControl, MenuItem, Pagination} from '@mui/material';
-import { Container, styled } from '@mui/system';
-import {SearchRounded} from '@mui/icons-material';
-import {useNavigate} from "react-router-dom";
+import { Box, Select, FormControl, MenuItem, Pagination } from '@mui/material';
+import { Container } from '@mui/system';
+import { SearchRounded } from '@mui/icons-material';
+import { useNavigate } from "react-router-dom";
 import SearchList from '../list/SearchList';
-import postData from '../../postData.json';
-
-//사이드바, 검색 페이지 입력 연동을 위해 사용
-export const store = {
-    state: "",
-    setState(value){
-        this.state = value
-        this.setters.forEach(setter => setter(this.state))
-    },
-    setters: []
-}
-
-store.setState = store.setState.bind(store);
-
-export function useStore(){
-    const [keyword, setKeyword] = useState(store.state);
-    if(!store.setters.includes(setKeyword)){
-        store.setters.push(setKeyword)
-    }
-    return [keyword, store.setState]
-}
-
-//사이드바 상태 전달
-export const sideState = {
-    state: 0,
-    setState(value){
-        this.state = value
-        this.setters.forEach(setter => setter(this.state))
-    },
-    setters: []
-}
-
-sideState.setState = sideState.setState.bind(sideState);
-
-export function useSideState(){
-    const [state, setState] = useState(sideState.state);
-    if(!sideState.setters.includes(setState)){
-        sideState.setters.push(setState)
-    }
-    return [state, sideState.setState]
-}
-
-const Search = styled(ListItem)({
-    width: '90%',
-    borderRadius: '20px',
-    marginLeft: '15px',
-    backgroundColor: 'rgba(0,0,0,0.06)',
-});
-
-const SearchIconWrapper = styled('div')({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-});
-
-const SearchInput = styled(InputBase)({
-    display: 'inline-block',
-    marginLeft: '10px',
-    fontSize: '17px',
-});
-
-const StyledTabs = styled((props) => (
-    <Tabs
-      {...props}
-      TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
-    />
-    ))({
-    '& .MuiTabs-indicator': {
-      display: 'flex',
-      justifyContent: 'center',
-      backgroundColor: 'transparent',
-    },
-    '& .MuiTabs-indicatorSpan': {
-      maxWidth: '40',
-      width: '100%',
-      backgroundColor: 'skyblue',
-    },
-});
-
-const StyledResultText = styled(Box)({
-    display: 'inline-block',
-    verticalAlign: 'middle',
-    marginLeft: '20px',
-})
-  
-const StyledTab = styled(Tab)({
-    fontSize: '18px',
-    '&.Mui-selected': {
-        fontWeight: 'bold',
-        color: 'rgba(23, 36, 40, 0.8)',
-    },
-});
-
-function TabPanel(props) {
-    const {children, value, index} = props;
-  
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-        >
-            {value === index && (
-            <Box sx={{ p: 3 }}>
-                <Typography>{children}</Typography>
-            </Box>
-            )}
-        </div>
-    );
-}
+import data from "../../data.json"
+import { useStore, useSideState, useVisible } from "../ui/CustomHooks";
+import { Search, SearchIconWrapper, SearchInput, StyledTabs, StyledResultText, 
+    StyledTab, TabPanel } from "../ui/StyledSearchPage.jsx";
+import posts from "./main/images";
 
 function SearchPage(props) {
-    const [keyword, setKeyword] = useStore();
-    const [word, setWord] = useState(); //입력된 검색어
+    
+    const [keyword, setKeyword] = useStore(); //입력 중인 검색어 
+    const [word, setWord] = useState(); //enter 후 입력된 검색어
     const [state, setState] = useSideState(); //사이드 바 상태
-    const [tabState, setTabState] = useState(0); //글,사용자 탭 상태
+    const [tabState, setTabState] = useState(0); //제목, 사용자 탭 상태
     const [toggleState, setToggleState] = useState("블로그 내부 검색"); //블로그 내부 검색, 전체 검색 상태
+
     const [page, setPage] = useState(1); //현재 페이지
     const pageLimit = 5; //한 페이지에 나타날 검색 결과 개수
-    const offset = (page - 1) * pageLimit;
+    const offset = (page - 1) * pageLimit; 
+    const [postCount, setPostCount] = useState(0); //검색 결과 개수 받아오기
+    //const [visible, setVisible] = useVisible(false);
+    const [resultTitleInner, setResultTitleInner] = useState([]); //제목 블로그 내부 검색 결과
+    const [resultTitleTotal, setResultTitleTotal] = useState([]); //제목 전체 검색 결과
+    const [resultUser, setResultUser] = useState([]); //사용자 검색 결과
+
     const navigate = useNavigate();
-    const postCount = 6; //검색 결과 개수 받아오기
+    const email = "1@gmail.com"; //임시로 설정
     
     useEffect(() => {
         setWord(keyword);
         setTabState(0);
         setToggleState("블로그 내부 검색");
+        getSearchResult();
     }, [state])
+
+    useEffect(() => {
+        setPage(1);
+        getSearchResult();
+        window.scrollTo(0, 0);
+    }, [tabState, word, toggleState])
+
+    const getSearchResult = () => {
+        if(tabState === 1)
+            getResultUser();
+        else{
+            if(toggleState === "블로그 내부 검색")
+                getResultTitleInner();
+            else
+                getResultTitleTotal();
+        }
+    }
+
+    //블로그 내부 검색
+    const getResultTitleInner = () => {
+        let newResult = [];
+        posts && posts.map((post, index) => {
+            if(post.title.includes(word) && email === post.email){
+                return newResult = newResult.concat(post);
+            }
+        })
+        setResultTitleInner(newResult);
+        setPostCount(newResult.length);
+    }
+
+    //전체 검색
+    const getResultTitleTotal = () => {
+        let newResult = [];
+        posts && posts.map((post, index) => {
+            if(post.title.includes(word)){
+                return newResult = newResult.concat(post);
+            }
+        })
+        setResultTitleTotal(newResult);
+        setPostCount(newResult.length);
+    }
+
+    //사용자 검색
+    const getResultUser = () => {
+        let newResult = [];
+        data && data.map((person, index) => {
+            if(person.nickName.includes(word)){
+                return newResult = newResult.concat(person);
+            }
+        })
+        setResultUser(newResult);
+        setPostCount(newResult.length);
+    }
+
+    const onSelectResult = () => {
+        if(tabState === 1)
+            return resultUser;
+        else{
+            if(toggleState === "블로그 내부 검색")
+                return resultTitleInner;
+            else
+                return resultTitleTotal;
+        }
+    }
+
+    const onChangePage = (e) => {
+        const nextPage = e.target.textContent;
+        const count = Math.floor((postCount-1) / pageLimit + 1);
+        if(nextPage >= 1 && nextPage <= count)
+            setPage(nextPage);
+    }
+
+    const onScroll = () => {
+        window.scrollTo(1000, 0);
+    }
 
     return (
         <Box>
             <Sidebar/>
-            <Container maxWidth='md' sx={{display: 'flex', 
-                justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+            <Container 
+                maxWidth='md' 
+                sx={{
+                    display: 'flex', 
+                    justifyContent: 'center', 
+                    alignItems: 'center', 
+                    flexDirection: 'column'
+                }}>
                 <Box sx={{width: '50%', margin: '30px'}}>
                     <Search>
                         <SearchIconWrapper>
@@ -164,13 +150,19 @@ function SearchPage(props) {
                     </Search>
                 </Box>  
                 {(state !== 0)? 
-                <Box sx={{width: '100%', height: '80vh', typography: 'body1', marginTop:'10px'}}>
+                <Box 
+                    sx={{
+                        width: '100%', 
+                        height: '80vh', 
+                        typography: 'body1', 
+                        marginTop:'10px'
+                    }}>
                     <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                         <StyledTabs 
                             value={tabState} 
-                            onChange={(e, newValue) => {setTabState(newValue)}}
+                            onChange={(e, newValue) => setTabState(newValue)}
                         >
-                            <StyledTab label="글" />
+                            <StyledTab label="제목" />
                             <StyledTab label="사용자" />
                         </StyledTabs>
                     </Box>
@@ -180,7 +172,7 @@ function SearchPage(props) {
                                 <FormControl>
                                     <Select
                                         value={toggleState}
-                                        onChange={(e) => {setToggleState(e.target.value);}}
+                                        onChange={(e) => {setToggleState(e.target.value)}}
                                         displayEmpty
                                         sx={{fontSize: '14px', height: '30px'}}
                                     >
@@ -189,21 +181,39 @@ function SearchPage(props) {
                                     </Select>
                                 </FormControl>  
                             </Box>
-                            {(toggleState === "블로그 내부 검색")? <StyledResultText>'{word}' 에 대한 블로그 내부 검색 결과 {postCount}건</StyledResultText> 
+                            {(toggleState === "블로그 내부 검색")? 
+                                <StyledResultText>'{word}' 에 대한 블로그 내부 검색 결과 {postCount}건</StyledResultText> 
                                 : <StyledResultText>'{word}' 에 대한 전체 검색 결과 {postCount}건</StyledResultText>}
                         </Box>
                     </TabPanel>
                     <TabPanel value={tabState} index={1}>'{word}' 에 대한 사용자 검색 결과 {postCount}건</TabPanel>
-                    <Box sx={{width: '100%', margin: '10px 0', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                    <Box 
+                        sx={{
+                            width: '100%', 
+                            margin: '10px 0', 
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            justifyContent: 'center', 
+                            alignItems: 'center'
+                        }}>
                         <SearchList 
-                            posts={postData}
+                            list={onSelectResult()} //검색 결과인 게시글 목록
                             offset={offset}
                             pageLimit={pageLimit}
+                            tabState={tabState}
                             onClickItem={(item) => {
-                                navigate(`/post/${item.post_id}`)
+                                navigate(`/main`); //선택된 글의 post-id, email을 가져와서 이동
+                                //setVisible(true);
+                                onScroll();
                             }}
-                        />  
-                        <Pagination count={Math.floor(postCount / pageLimit + 1)} onChange={(e) => setPage(e.target.textContent)} color="primary" variant="outlined" sx={{margin: '20px'}}/>
+                        /> 
+                        <Pagination // 페이지 수 나타냄
+                            count={Math.floor((postCount - 1) / pageLimit + 1)} 
+                            onChange={(e) => onChangePage(e)} 
+                            color="primary" 
+                            variant="outlined" 
+                            sx={{margin: '20px'}}
+                        />      
                     </Box>  
                 </Box>: <Box></Box>}
             </Container>
