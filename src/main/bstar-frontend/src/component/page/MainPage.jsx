@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
-import MainPageContent from '../ui/MainPageContent';
+import MainPageContent from '../ui/main/MainPageContent';
 import {Link, Router} from "react-router-dom";
 import {Button} from "@mui/material";
 import axios from "axios";
@@ -48,7 +48,7 @@ function MainPage(props) {
         }
 
         const postList = urlList.map((u, index) =>
-            (<Link to={u}>{index+1}번째 글</Link>));
+            <Link to={u} >[제목]{data[index].title}</Link> );
 
         return (
             <div>
