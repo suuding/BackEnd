@@ -1,6 +1,5 @@
 package com.bstarbackend.bstar.domain.posts;
 
-
 import com.bstarbackend.bstar.domain.BaseTimeEntity;
 import com.bstarbackend.bstar.domain.user.Users;
 import lombok.Builder;
@@ -8,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
 
 @Getter
 @NoArgsConstructor
