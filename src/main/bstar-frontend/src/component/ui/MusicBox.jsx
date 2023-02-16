@@ -6,17 +6,12 @@ import ReactAudioPlayer from "react-audio-player";
 import styled from "styled-components";
 import { keyframes } from "styled-components";
 import music1 from "./music/G-Dragon - R.O.D. (feat. Lydia Paek).mp3";
-import music2 from "./music/Bigbang - Blue.mp3";
 import music3 from "./music/004 아이유 - 너의 의미 (Feat. 김창완).mp3";
-import music4 from "./music/MC Mong - 죽을 만큼 아파서 (Feat. 멜로우).mp3";
-import music5 from "./music/윤하 - 우리가 헤어진 진짜 이유.mp3";
-import music6 from "./music/효린-안녕.mp3";
 import { Grid } from "@mui/material";
 import { Box } from '@mui/material';
 
 const WhatMusic = styled.div`
   text-align: center;
-  align-items: left;
   font-size: 1vw;
   width: 30%;
   margin: 0px;
@@ -40,25 +35,9 @@ const MUSICS = [
     name: "G-Dragon  -  R.O.D (feat. Lydia Paek)",
   },
   {
-    path: music2,
-    name: "BIGBANG  -  Blue",
-  },
-  {
     path: music3,
     name: "아이유  -  너의 의미 (Feat. 김창완)",
-  },
-  {
-    path: music4,
-    name: "MC Mong  -  죽을 만큼 아파서 (Feat. 멜로우)",
-  },
-  {
-    path: music5,
-    name: "윤하  -  우리가 헤어진 진짜 이유",
-  },
-  {
-    path: music6,
-    name: "효린  -  안녕",
-  },
+  }
 ];
 
 const Container = styled.div`
