@@ -8,6 +8,7 @@ import { CountertopsSharp } from "@mui/icons-material";
 import DetailList from "../list/DetailList"
 import { Input } from "antd"
 import axios from "axios";
+import Sidebar from "./Sidebar";
 
 //화면의 중앙에 위치시킴
 const Wrapper = styled.div`
@@ -69,18 +70,21 @@ const { TextArea } = Input
 
 function WritePage(props) {
 
+    const navigate = useNavigate();
+
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-
     const [image,setImage] = useState("");
     const [content1,setContent1] = useState("");
 
+    // [0, 1, 2, 3]
+    const [countList, setCountList] = useState([0]);
 
     const onAddWrite = () => {
     }
 
     function onWrite() {
-        axios.post('/api/posts',
+        axios.post('/posts',
             JSON.stringify({
                 title: title,
                 content: content,
@@ -124,6 +128,7 @@ function WritePage(props) {
 
     return (
         <Wrapper>
+            <Sidebar/>
             <Container>
                 <TextArea
                     type="text" value={title}
@@ -138,19 +143,6 @@ function WritePage(props) {
                     }}
                     autoSize={{minRows: 1, maxRows: 1}}/>
 
-                <div>
-                    <input type="file" id="image" accept="image/*"
-                           style={{border: "solid 1px lightgray", borderRadius: "5px"}}
-                           onChange={setPreviewImg}/>
-                    <br></br>
-                    <img src={image} style={{maxWidth:"500px"}}></img>
-                    <TextArea
-                        type="text" value={content1}
-                        onChange={(e) => {
-                            setContent1(e.target.value);
-                        }}
-                        autoSize={{minRows:3, maxRows:3}}/>
-                </div>
                 <div>
                     <input type="file" id="image" accept="image/*"
                            style={{border: "solid 1px lightgray", borderRadius: "5px"}}
