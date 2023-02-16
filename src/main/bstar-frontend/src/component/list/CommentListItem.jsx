@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
     width: calc(100% - 32px);
-    padding: 16px;
+    padding: 1px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -23,11 +23,11 @@ const ContentText = styled.p`
 `;
 
 function CommentListItem(props) {
-    const { commment } = props;
+    const { comment } = props;
 
     return (
         <Wrapper>
-            <ContentText>{commment.Content}</ContentText>;
+            <ContentText>{ comment.content }</ContentText>
         </Wrapper>
     );
 }

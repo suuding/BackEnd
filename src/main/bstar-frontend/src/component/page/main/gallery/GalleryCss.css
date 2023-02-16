@@ -1,0 +1,27 @@
+.borderHeart{
+    cursor: pointer; /*커서모양을 누르는 커서로*/
+    transition: transform 300ms ease;
+}
+
+.borderHeart:hover{
+    transform: scale(1.1);
+}
+
+.redHeart{
+    color: red;
+}
+
+.redHeart:hover{
+    transform: scale(1.1);
+}
+
+.galleryTotal{
+    display: flex;
+    flex-direction: column;
+}
+
+.gallery{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

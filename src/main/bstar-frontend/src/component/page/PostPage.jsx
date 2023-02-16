@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import TextInput from "../ui/TextInput";
-import CommentBox from "../ui/CommentBox";
 import { Button } from '@mui/material';
 import { CountertopsSharp } from "@mui/icons-material";
 import DetailList from "../list/DetailList"
@@ -100,7 +99,26 @@ function PostPage(props) {
                         }}>글 수정
                     </Button>
 
-                    <CommentBox></CommentBox>
+                    <Button
+                        sx={{ //css 적용
+                            mt: 3,
+                            pr: 11,
+                            pl: 11,
+                            color: 'white',
+                            border: '1px solid skyblue',
+                            borderRadius: '10px',
+                            backgroundColor: 'skyblue',
+                            // "&.Mui[mui이름]-root:[event 속성]" : {}로 기본적으로 적용된 css를 변경시킬 수 있다.
+                            // "&.MuiButton-root:hover" : {}로 기본적으로 탑재되어있는 css를 바꿈
+                            "&.MuiButton-root:hover": {
+                                color: 'skyblue',
+                                borderColor: 'skyblue'
+                            }
+                        }}
+                        onClick={() => {
+                            navigate("/main");
+                        }}>목록으로
+                    </Button>
 
                 </Container>
             </Wrapper>

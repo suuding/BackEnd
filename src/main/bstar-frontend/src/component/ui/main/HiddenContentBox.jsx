@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box } from '@mui/material';
-import Gallery from "../page/main/Gallery";
+import Gallery from "../../page/main/gallery/Gallery";
 
 function HiddenContentBox(props) {
 
@@ -9,12 +9,16 @@ function HiddenContentBox(props) {
     return(
         <Box
             sx={{
-                width: '55%',
+                width: '56%',
                 height: '86vh',
                 border: '1px solid skyblue'
             }}
         >
+            
             <Gallery data={data}/>
+            
+            
+            
         </Box>
         
     );

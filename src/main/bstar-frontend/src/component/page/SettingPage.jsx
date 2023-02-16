@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Sidebar from './Sidebar';
 import { styled } from '@mui/material/styles';
-import {Box, Typography, Divider, OutlinedInput, FormControl, TableContainer, 
+import {Box, Typography, Divider, OutlinedInput, FormControl, TableContainer,
     Table, TableHead, Button, TableRow, TableCell, Checkbox, TableBody, Paper, tableCellClasses} from '@mui/material';
 import { Container } from '@mui/system';
 import data from "../../data.json";
@@ -11,10 +11,10 @@ const StyledTableCell = styled(TableCell)(({theme}) => ({
     [`&.${tableCellClasses.head}`]: {
         color: theme.palette.common.black,
         fontSize: 16,
-      },
-      [`&.${tableCellClasses.body}`]: {
+    },
+    [`&.${tableCellClasses.body}`]: {
         fontSize: 15,
-      },
+    },
 }))
 
 function SettingPage(props) {
@@ -30,8 +30,8 @@ function SettingPage(props) {
 
     useEffect(() => {
         axios.get('/setting/info')
-        .then(response => setInfo(response.data))
-        .catch(error => console.log(error))
+            .then(response => setInfo(response.data))
+            .catch(error => console.log(error))
     }, []);
 
     useEffect(() => {
@@ -63,7 +63,7 @@ function SettingPage(props) {
             image: file
         });
     }
-    
+
     const onUploadImage = () => {
 
     }
@@ -78,17 +78,17 @@ function SettingPage(props) {
 //
 //         axios.put('/setting/info', params);
         axios.put('/setting/info', {
-                blogName: blogName,
-                nickName: nickName,
-                introduction: introduction
-            })
+            blogName: blogName,
+            nickName: nickName,
+            introduction: introduction
+        })
             .then(function (response) {
-                 alert("수정되었습니다.");
+                alert("수정되었습니다.");
             }).catch(function (error) {
-                alert(error);
-            }).then(function() {
-                // 항상 실행
-            });
+            alert(error);
+        }).then(function() {
+            // 항상 실행
+        });
     }
 
     const onSelectAllClick = (e) => {
@@ -96,8 +96,8 @@ function SettingPage(props) {
             const newSelected = inputs.friends;
             setSelected(newSelected);
             return;
-          }
-          setSelected([]);
+        }
+        setSelected([]);
     }
 
     const onSelectClick = (id) => {
@@ -105,11 +105,11 @@ function SettingPage(props) {
         let newSelected = [];
 
         if (selectedIndex === -1) {
-        newSelected = newSelected.concat(selected, id);
+            newSelected = newSelected.concat(selected, id);
         } else if (selectedIndex === 0) {
-        newSelected = newSelected.concat(selected.slice(1));
+            newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
-        newSelected = newSelected.concat(selected.slice(0, -1));
+            newSelected = newSelected.concat(selected.slice(0, -1));
         } else if (selectedIndex > 0) {
             newSelected = newSelected.concat(
                 selected.slice(0, selectedIndex),
@@ -120,7 +120,7 @@ function SettingPage(props) {
     }
 
     const isSelected = (nickName) => selected.indexOf(nickName) !== -1;
-    
+
     const onRemoveData = () => {
 
     }
@@ -129,7 +129,7 @@ function SettingPage(props) {
         <Box>
             <Sidebar/>
             <Container maxWidth='md'>
-                <Box 
+                <Box
                     sx={{
                         margin: '30px 0'
                     }}
@@ -155,7 +155,7 @@ function SettingPage(props) {
                         </FormControl>
                         <FormControl sx={{margin: '20px 0'}}>
                             <label style={{color: 'rgba(0,0,0,0.80)', marginBottom: '10px'}}>별명</label>
-                            <OutlinedInput 
+                            <OutlinedInput
                                 name="nickName"
                                 value={nickName}
                                 onChange={onChangeInputs}
@@ -163,7 +163,7 @@ function SettingPage(props) {
                         </FormControl>
                         <FormControl sx={{margin: '20px 0'}}>
                             <label style={{color: 'rgba(0,0,0,0.80)', marginBottom: '10px'}}>프로필 소개글</label>
-                            <OutlinedInput 
+                            <OutlinedInput
                                 name="introduction"
                                 value={introduction}
                                 onChange={onChangeInputs}
@@ -182,22 +182,22 @@ function SettingPage(props) {
                                 />
                                 <div>
                                     {image? (<img src={URL.createObjectURL(image[0])} alt="profileImage" width= '160px' height= '160px'/>)
-                                    : (<Box sx={{width: '160px', height: '160px', border: '1px solid rgba(0,0,0,0.25)', borderRadius: '5px'}}></Box>)}
+                                        : (<Box sx={{width: '160px', height: '160px', border: '1px solid rgba(0,0,0,0.25)', borderRadius: '5px'}}></Box>)}
                                 </div>
                                 <label htmlFor="image-button">
                                     <Button component="span" variant="outlined" onClick={onUploadImage} sx={{margin: '0 10px'}}>등록</Button>
-                                </label>                
+                                </label>
                             </Box>
                         </FormControl>
                         <FormControl sx={{marginTop: '20px'}}>
                             <label style={{color: 'rgba(0,0,0,0.80)', marginBottom: '10px'}}>프로필 음악</label>
-                            <OutlinedInput 
+                            <OutlinedInput
                                 name="music"
                                 value={music}
                                 onChange={onChangeInputs}
-                            /> 
+                            />
                         </FormControl>
-                    </Box> 
+                    </Box>
                     <Button variant="outlined" onClick={onChangeData}>수정</Button>
                 </Box>
                 <Box sx={{margin: '20px 0'}}>
@@ -220,8 +220,8 @@ function SettingPage(props) {
                                     });
                                     const isItemSelected = isSelected(newFriend.id);
                                     return(
-                                        <TableRow 
-                                            key={newFriend.nickName} 
+                                        <TableRow
+                                            key={newFriend.nickName}
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
                                             onClick={() => onSelectClick(newFriend.id)}
@@ -231,10 +231,10 @@ function SettingPage(props) {
                                                 <Checkbox checked={isItemSelected}/>
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                                {newFriend.nickName} 
+                                                {newFriend.nickName}
                                             </StyledTableCell>
                                         </TableRow>
-                                    ); 
+                                    );
                                 })}
                             </TableBody>
                         </Table>
