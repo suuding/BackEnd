@@ -29,6 +29,7 @@ function SearchPage(props) {
     const [resultUser, setResultUser] = useState([]); //사용자 검색 결과
 
     const navigate = useNavigate();
+    //const [email, setEmail] = useState();
     const email = "1@gmail.com"; //임시로 설정
     
     useEffect(() => {
@@ -58,7 +59,8 @@ function SearchPage(props) {
     //블로그 내부 검색
     const getResultTitleInner = () => {
         let newResult = [];
-        posts && posts.map((post, index) => {
+        posts && posts.map((post) => {
+            //로그인한 email과 post의 email이 동일하고 post의 title에 검색어가 포함된 post를 들고오기 !
             if(post.title.includes(word) && email === post.email){
                 return newResult = newResult.concat(post);
             }
@@ -70,7 +72,8 @@ function SearchPage(props) {
     //전체 검색
     const getResultTitleTotal = () => {
         let newResult = [];
-        posts && posts.map((post, index) => {
+        posts && posts.map((post) => {
+            //post의 title에 검색어가 포함된 post를 들고오기 !
             if(post.title.includes(word)){
                 return newResult = newResult.concat(post);
             }
@@ -82,8 +85,9 @@ function SearchPage(props) {
     //사용자 검색
     const getResultUser = () => {
         let newResult = [];
-        data && data.map((person, index) => {
+        data && data.map((person) => {
             if(person.nickName.includes(word)){
+                //user의 nickName에 검색어가 포함된 user를 들고오기 !
                 return newResult = newResult.concat(person);
             }
         })
@@ -92,12 +96,12 @@ function SearchPage(props) {
     }
 
     const onSelectResult = () => {
-        if(tabState === 1)
+        if(tabState === 1) //사용자 선택
             return resultUser;
         else{
-            if(toggleState === "블로그 내부 검색")
+            if(toggleState === "블로그 내부 검색") //제목 & 블로그 내부
                 return resultTitleInner;
-            else
+            else //제목 & 전체
                 return resultTitleTotal;
         }
     }
@@ -149,7 +153,7 @@ function SearchPage(props) {
                         />
                     </Search>
                 </Box>  
-                {(state !== 0)? 
+                {(state !== 0)?
                 <Box 
                     sx={{
                         width: '100%', 
@@ -181,12 +185,20 @@ function SearchPage(props) {
                                     </Select>
                                 </FormControl>  
                             </Box>
-                            {(toggleState === "블로그 내부 검색")? 
-                                <StyledResultText>'{word}' 에 대한 블로그 내부 검색 결과 {postCount}건</StyledResultText> 
-                                : <StyledResultText>'{word}' 에 대한 전체 검색 결과 {postCount}건</StyledResultText>}
+                            {toggleState === "블로그 내부 검색"?
+                                <StyledResultText>
+                                    '{word}' 에 대한 블로그 내부 검색 결과 {postCount}건
+                                </StyledResultText>
+                                :
+                                <StyledResultText>
+                                    '{word}' 에 대한 전체 검색 결과 {postCount}건
+                                </StyledResultText>
+                            }
                         </Box>
                     </TabPanel>
-                    <TabPanel value={tabState} index={1}>'{word}' 에 대한 사용자 검색 결과 {postCount}건</TabPanel>
+                    <TabPanel value={tabState} index={1}>
+                        {word}' 에 대한 사용자 검색 결과 {postCount}건
+                    </TabPanel>
                     <Box 
                         sx={{
                             width: '100%', 
