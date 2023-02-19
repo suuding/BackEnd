@@ -31,6 +31,7 @@ const StyledLabel = styled('label')({
 function SettingPage(props) {
     const [info, setInfo] = useState([]);
     const [inputs, setInputs] = useState([]);
+    const [email, setEmail] = useState();
     const [friendInputs, setFriendInputs] = useState([]);
     const [friends, setFriends] = useState([]);
     const {blogName, nickName, introduction, image, music} = inputs;
@@ -41,6 +42,10 @@ function SettingPage(props) {
             .then(response => setInfo(response.data))
             .catch(error => console.log(error))
     }, []);
+
+    useEffect(() => {
+        console.log(email);
+    });
 
     useEffect(() => {
         axios.get('/setting/friends')

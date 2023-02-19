@@ -1,8 +1,7 @@
 package com.bstarbackend.bstar.web;
 
 import com.bstarbackend.bstar.service.SettingsService;
-import com.bstarbackend.bstar.web.dto.SettingUpdateRequestDto;
-import com.bstarbackend.bstar.web.dto.SettingsResponseDto;
+import com.bstarbackend.bstar.web.dto.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
