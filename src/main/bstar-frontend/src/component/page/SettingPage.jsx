@@ -29,11 +29,12 @@ const StyledLabel = styled('label')({
 })
 
 function SettingPage(props) {
-    const tempEmail = "1@gmail.com";
     const [info, setInfo] = useState([]);
-    const [email, setEmail] = useState();
     const [inputs, setInputs] = useState([]);
-    const {blogName, nickName, introduction, image, music, friends} = inputs;
+    const [friendInputs, setFriendInputs] = useState([]);
+    const [friends, setFriends] = useState([]);
+    const {blogName, nickName, introduction, image, music} = inputs;
+    const {friendName, friendEmail} = friendInputs;
 
     useEffect(() => {
         axios.get('/setting/info')
@@ -41,13 +42,14 @@ function SettingPage(props) {
             .catch(error => console.log(error))
     }, []);
 
-    const user = data.find((person) => {
-        return person.email === tempEmail; //friends 정보 받아오기 전까지 임시로 설정
-    })
-
     useEffect(() => {
-        console.log(email);
-    })
+        axios.get('/setting/friends')
+        .then(response => {
+            console.log(response.data)
+            setFriends(response.data)
+            })
+        .catch(error => console.log(error))
+    }, []);
 
     useEffect(() => {
         setEmail(info.email);
@@ -56,10 +58,16 @@ function SettingPage(props) {
             nickName: info.nickName,
             introduction: info.introduction,
             image: info.image,
-            music: info.music,
-            friends: user.friends, //friends 정보 넣어주기
+            music: info.music
         });
     }, [info]);
+
+     useEffect(() => {
+        setFriendInputs({
+            friendEmail: friends.friendEmail,
+            friendName: friends.friendName
+        });
+    }, [friends]);
 
     const onChangeInputs = (e) => {
         const {value, name} = e.target;
@@ -258,29 +266,26 @@ function SettingPage(props) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {friends && friends.map((friend) => {
-                                    const newFriend = data.find((user) => {
-                                        return friend === user.email;
-                                    });
-                                    const isItemSelected = isSelected(newFriend.email);
-                                    return(
-                                        <TableRow
-                                            key={newFriend.nickName}
-                                            aria-checked={isItemSelected}
-                                            tabIndex={-1}
-                                            onClick={() => onSelectClick(newFriend.email)}
-                                            selected={isItemSelected}
-                                        >
-                                            <StyledTableCell>
-                                                <Checkbox checked={isItemSelected}/>
-                                            </StyledTableCell>
-                                            <StyledTableCell>
-                                                {newFriend.nickName}
-                                            </StyledTableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                            </TableBody>
+                           {friendName && friendName.map((friend) => {
+                                const isItemSelected = isSelected(friend);
+                                return(
+                                    <TableRow
+                                        key={friend}
+                                        aria-checked={isItemSelected}
+                                        tabIndex={-1}
+                                        onClick={() => onSelectClick(friend)}
+                                        selected={isItemSelected}
+                                    >
+                                        <StyledTableCell>
+                                            <Checkbox checked={isItemSelected}/>
+                                        </StyledTableCell>
+                                        <StyledTableCell>
+                                            {friend}
+                                        </StyledTableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
                         </Table>
                     </TableContainer>
                     <Button variant="outlined" onClick={onRemoveData}>삭제</Button>

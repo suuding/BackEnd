@@ -2,17 +2,21 @@ package com.bstarbackend.bstar.service;
 
 import com.bstarbackend.bstar.domain.setting.Settings;
 import com.bstarbackend.bstar.domain.setting.SettingsRepository;
-import com.bstarbackend.bstar.web.dto.SettingUpdateRequestDto;
-import com.bstarbackend.bstar.web.dto.SettingsResponseDto;
-import com.bstarbackend.bstar.web.dto.SettingsSaveRequestDto;
+import com.bstarbackend.bstar.domain.user.Friends;
+import com.bstarbackend.bstar.domain.user.FriendsRepository;
+import com.bstarbackend.bstar.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class SettingsService {
     private final SettingsRepository settingsRepository;
+    private final FriendsRepository friendsRepository;
 
     @Transactional
     public Settings save(String nickName, String email) {
@@ -37,5 +41,30 @@ public class SettingsService {
                 .orElseGet(() -> save(nickName, email));
 
         return new SettingsResponseDto(entity);
+    }
+
+    @Transactional
+    public Friends saveFriend(String myEmail, String friendName, String friendEmail) {
+        SettingFriendsSaveRequestDto requestDto = new SettingFriendsSaveRequestDto(myEmail, friendName, friendEmail);
+        friendsRepository.save(requestDto.toEntity());
+        return requestDto.toEntity();
+    }
+
+    @Transactional
+    public void saveFriendsList(String myEmail){
+        saveFriend(myEmail, "영채", "chaee813@gmail.com");
+        saveFriend(myEmail, "수현", "sudaeng2@gmail.com");
+        saveFriend(myEmail, "주희", "zigimi@gmail.com");
+    }
+
+    @Transactional(readOnly = true)
+    public SettingFriendsResponseDto findByMyEmail(String myEmail){
+        List<Friends> friendList = friendsRepository.findByMyEmail(myEmail);
+        if(friendList == null || friendList.isEmpty()) {
+            saveFriendsList(myEmail);
+            friendList = friendsRepository.findByMyEmail(myEmail);
+        }
+
+        return new SettingFriendsResponseDto(friendList);
     }
 }

@@ -27,4 +27,11 @@ public class SettingController {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         settingsService.update(oAuth2User.getAttribute("email"), requestDto);
     }
+
+    @GetMapping("/setting/friends")
+    public SettingFriendsResponseDto showFriends(Authentication authentication, @AuthenticationPrincipal UserDetails userDetails){
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        SettingFriendsResponseDto friends = settingsService.findByMyEmail(oAuth2User.getAttribute("email"));
+        return friends;
+    }
 }
