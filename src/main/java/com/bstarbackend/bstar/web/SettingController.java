@@ -9,6 +9,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 public class SettingController {
@@ -33,4 +35,21 @@ public class SettingController {
         SettingFriendsResponseDto friends = settingsService.findByMyEmail(oAuth2User.getAttribute("email"));
         return friends;
     }
+
+    @PutMapping("/setting/friends")
+    public void delete(Authentication authentication, @RequestBody SettingFriendsDeleteRequestDto requestDto) {
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        for(String i : requestDto.getFriendEmail())
+        {
+            settingsService.delete(oAuth2User.getAttribute("email"), i);
+        }
+    }
+
+    /*@DeleteMapping("/setting/delete")
+    public String delete(Authentication authentication, @AuthenticationPrincipal UserDetails userDetails) {
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        settingsService.delete(oAuth2User.getAttribute("email"), friendEmail);
+
+        return ;
+    }*/
 }

@@ -31,21 +31,16 @@ const StyledLabel = styled('label')({
 function SettingPage(props) {
     const [info, setInfo] = useState([]);
     const [inputs, setInputs] = useState([]);
-    const [email, setEmail] = useState();
     const [friendInputs, setFriendInputs] = useState([]);
     const [friends, setFriends] = useState([]);
     const {blogName, nickName, introduction, image, music} = inputs;
-    const {friendName, friendEmail} = friendInputs;
+    const {friendList} = friendInputs;
 
     useEffect(() => {
         axios.get('/setting/info')
             .then(response => setInfo(response.data))
             .catch(error => console.log(error))
     }, []);
-
-    useEffect(() => {
-        console.log(email);
-    });
 
     useEffect(() => {
         axios.get('/setting/friends')
@@ -57,7 +52,6 @@ function SettingPage(props) {
     }, []);
 
     useEffect(() => {
-        setEmail(info.email);
         setInputs({
             blogName: info.blogName,
             nickName: info.nickName,
@@ -69,8 +63,7 @@ function SettingPage(props) {
 
      useEffect(() => {
         setFriendInputs({
-            friendEmail: friends.friendEmail,
-            friendName: friends.friendName
+            friendList: friends.friendList
         });
     }, [friends]);
 
@@ -119,14 +112,19 @@ function SettingPage(props) {
     }
 
     const [selected, setSelected] = useState([]);
-
+    const [friendEmail, setFriendEmail] = useState([]);
     const onSelectAllClick = (e) => {
         if (e.target.checked) {
-            const newSelected = inputs.friends;
+            friendList.map((friend)=> {
+                friendEmail.push(friend.friendEmail);
+            })
+            const newSelected = friendEmail;
             setSelected(newSelected);
             return;
         }
         setSelected([]);
+        setFriendEmail([]);
+
     }
 
     const onSelectClick = (id) => {
@@ -152,6 +150,17 @@ function SettingPage(props) {
 
     const onRemoveData = () => {
         //선택된 이웃 삭제
+        axios.put('/setting/friends', {
+            friendEmail: selected
+        })
+            .then(function (response) {
+                alert("삭제되었습니다.");
+                window.location.href = '/setting';
+            }).catch(function (error) {
+            alert(error);
+        }).then(function() {
+            // 항상 실행
+        });
     }
 
     return (
@@ -271,21 +280,25 @@ function SettingPage(props) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                           {friendName && friendName.map((friend) => {
-                                const isItemSelected = isSelected(friend);
+
+                           {friendList && friendList.map((friend) => {
+                                const friendName = friend.friendName;
+                                const friendEmail = friend.friendEmail;
+
+                                const isItemSelected = isSelected(friendEmail);
                                 return(
                                     <TableRow
                                         key={friend}
                                         aria-checked={isItemSelected}
                                         tabIndex={-1}
-                                        onClick={() => onSelectClick(friend)}
+                                        onClick={() => onSelectClick(friendEmail)}
                                         selected={isItemSelected}
                                     >
                                         <StyledTableCell>
                                             <Checkbox checked={isItemSelected}/>
                                         </StyledTableCell>
                                         <StyledTableCell>
-                                            {friend}
+                                            {friendName}
                                         </StyledTableCell>
                                     </TableRow>
                                 );

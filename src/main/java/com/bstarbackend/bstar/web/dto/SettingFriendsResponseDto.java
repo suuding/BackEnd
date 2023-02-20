@@ -9,11 +9,12 @@ import java.util.List;
 
 @Getter
 public class SettingFriendsResponseDto {
-    private List<String> friendName;
-    private List<String> friendEmail;
+    /*private List<String> friendName;
+    private List<String> friendEmail;*/
+    private List<Friends> friendList;
 
     public SettingFriendsResponseDto(List<Friends> flist){
-        List<String> friendNameList = new ArrayList<String>();
+        /*List<String> friendNameList = new ArrayList<String>();
         List<String> friendEmailList = new ArrayList<String>();
         for(Friends i : flist)
         {
@@ -23,6 +24,8 @@ public class SettingFriendsResponseDto {
 
         this.friendName = friendNameList;
         this.friendEmail = friendEmailList;
+         */
 
+        this.friendList = flist;
     }
 }

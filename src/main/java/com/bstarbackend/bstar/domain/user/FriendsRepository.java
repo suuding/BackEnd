@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface FriendsRepository extends JpaRepository<Friends, Long> {
     List<Friends> findByMyEmail(String myEmail);
+    Friends findByMyEmailAndFriendEmail(String myEmail, String friendEmail);
 }

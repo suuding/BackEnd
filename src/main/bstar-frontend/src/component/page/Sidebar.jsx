@@ -5,6 +5,7 @@ import {SearchRounded, ExpandLess, ExpandMore, Group, Settings, Edit, AccountCir
 import {useNavigate} from "react-router-dom";
 import data from "../../data.json";
 import {useStore, useSideState} from "../ui/CustomHooks";
+import axios from 'axios';
 import { Search, SearchIconWrapper, SearchInput, NestedBox, StateCircle, ImageCircle } from "../ui/StyledSidebar";
 
 function Sidebar(){
@@ -28,6 +29,24 @@ function Sidebar(){
     const [toggle, setToggle] = useState(false);
     const navigate = useNavigate();
     const [word, setWord] = useState("");
+    const [friends, setFriends] = useState([]);
+    const [friendInputs, setFriendInputs] = useState([]);
+    const {friendList} = friendInputs;
+
+    useEffect(() => {
+        axios.get('/setting/friends')
+        .then(response => {
+            console.log(response.data)
+            setFriends(response.data)
+            })
+        .catch(error => console.log(error))
+    }, []);
+
+    useEffect(() => {
+        setFriendInputs({
+            friendList: friends.friendList
+        });
+    }, [friends]);
 
     useEffect(() => {
         const onMouseMove = (e) => {
@@ -42,6 +61,8 @@ function Sidebar(){
         };
         window.addEventListener('mousemove', onMouseMove);
     })
+
+
 
     return (
         <Box 
@@ -119,11 +140,14 @@ function Sidebar(){
                                         unmountOnExit
                                     >
                                         <List component="div" disablePadding>
-                                            {data.map((friend, index) => {
+                                            {friendList && friendList.map((friend) => {
+                                                const friendName = friend.friendName;
+                                                const friendEmail = friend.friendEmail;
+
                                                 return(
-                                                    <ListItem key={friend.email} sx={{ padding: '0 15px 0 25px'}}>
-                                                        <ListItemButton href={'/' + friend.blogName}>
-                                                            {
+                                                    <ListItem key={friendEmail} sx={{ padding: '0 15px 0 25px'}}>
+                                                        <ListItemButton href={'/' + friendName}>
+                                                            {/*}{
                                                                 friend.image? 
                                                                 <img 
                                                                     src={friend.image} 
@@ -145,9 +169,9 @@ function Sidebar(){
                                                                         verticalAlign: '-10px'
                                                                     }}
                                                                 />
-                                                            }
-                                                            <ListItemText primary={friend.nickName} sx={{marginLeft: '30px'}}/>
-                                                            {friend.newState && <StateCircle/>}
+                                                            }*/}
+                                                            <ListItemText primary={friendName} sx={{marginLeft: '30px'}}/>
+                                                            {/*}{friend.newState && <StateCircle/>}*/}
                                                         </ListItemButton>
                                                     </ListItem>
                                                 );  

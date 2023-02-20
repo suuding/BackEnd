@@ -67,4 +67,11 @@ public class SettingsService {
 
         return new SettingFriendsResponseDto(friendList);
     }
+
+    @Transactional
+    public void delete(String myEmail, String friendEmail) {
+        Friends friends = friendsRepository.findByMyEmailAndFriendEmail(myEmail, friendEmail);
+
+        friendsRepository.delete(friends);
+    }
 }
