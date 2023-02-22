@@ -1,7 +1,9 @@
 package com.bstarbackend.bstar.web.dto;
 
 import com.bstarbackend.bstar.domain.pictures.Pictures;
+import lombok.Getter;
 
+@Getter
 public class PicturesListResponseDto {
 
     private Long id;

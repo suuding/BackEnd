@@ -45,7 +45,8 @@ function PostPage(props) {
     const navigate = useNavigate();
 
     const {postId} = useParams();
-    const url = "http://localhost:8080/api/posts/"+postId;
+    const posturl = "http://localhost:8080/api/posts/"+postId;
+    const pictureurl = "http://localhost:8080/api/pictures/"+postId;
 
 
     const [data, setData] = useState(null);
@@ -53,11 +54,15 @@ function PostPage(props) {
     const [content, setContent] = useState("");
 
     useEffect(() => {
-        axios.get(url)
+        axios.get(posturl)
             .then((res) => {
-                setData(res.data);
                 setTitle(res.data.title);
                 setContent(res.data.content);
+            })
+        axios.get(pictureurl)
+            .then((res) => {
+                setData(res.data);
+                console.log(res.data);
             })
     }, []);
 
@@ -74,8 +79,13 @@ function PostPage(props) {
                     <label For="content">내용</label>
                     <p
                         value={content} id="content"
-                        autoSize={{minRows: 1, maxRows: 1}}>
+                        autoSize={{minRows: 3, maxRows: 3}}>
                         {content}
+                    </p>
+                    <p>
+                        {data && data.map(p => {
+                            return (<div value={p.pictureContent}> {p.pictureContent} </div>);
+                        })}
                     </p>
 
                     <Button

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, {useState, useRef, useEffect} from "react";
 import { Box } from '@mui/material';
 import { Grid } from '@mui/material';
 import { Button } from '@mui/material';
@@ -12,6 +12,8 @@ import ProfileImage from '../ProfileImage';
 import MusicBox from "../MusicBox";
 import ProfileContents from "../ProfileContents";
 import YouTubePlayer from "../YoutubePlayer";
+import axios from "axios";
+import {Link} from "react-router-dom";
 
 function ContentGrid(){
 
@@ -52,9 +54,126 @@ function ContentGrid(){
     useEffect(getPosts, []);
     */
 
-    
-    
-    return(
+    const [postData, setPostData] = useState(null);
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/api/posts/list")
+            .then(res => {
+                setPostData(res.data);
+            })
+    }, []);
+
+    if (postData) {
+        let urlList = [];
+        for (let i = 0; i < postData.length; i++) {
+            urlList.push('/posts/' + postData[i].id);
+        }
+
+        const postList = urlList.map((u, index) =>
+            <Link to={u}>[제목]{postData[index].title}</Link>);
+
+        return (
+            <Grid container spacing={6}>
+                <Grid item xs={12} sm={6.6}>
+
+                    <Grid container spacing={1}>
+                        <Grid item xs={12} sm={3}>
+                            <Box
+                                sx={{
+                                    width: '100%',
+                                    height: '84vh',
+                                    border: '1px solid skyblue'
+                                }}
+                                //ref={stay} -> 여기쓰면 적용안됨
+                            >
+                                <Button
+                                    ref={stay} // -> 여기써야 적용됨
+                                >
+                                    profile
+                                </Button>
+                                profile
+
+                                <ProfileImage/> {/* 프사 */}
+                                <ProfileContents/>
+                                <MusicBox/>
+                                <YouTubePlayer/>
+
+
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12} sm={9}>
+                            <Box
+                                sx={{
+                                    width: '100%',
+                                    height: '84vh',
+                                    border: '1px solid skyblue',
+                                    padding: '1%'
+                                }}
+                            >
+
+                                <Grid container spacing={2}>
+                                    {/* 하위 component로 전달할 함수 매개변수로 주기 */}
+
+                                    {/*서버통신할 때 사용
+                                <ContentBox Move={Move} post={posts}></ContentBox>
+                                */}
+
+                                    {/* map 함수를 사용해야 data가 1개씩 전달됨 & data수만큼 글 생성 */}
+                                    {img.map((img) => (
+                                        <ContentBox Move={Move} onView={onView} setId={setId} key={img.id}
+                                                    img={img} {...img}></ContentBox>
+                                    ))}
+
+                                    {urlList.map((u, index) => (
+                                        <ContentBox Move={Move} onView={onView} setId={setId} img={null}>
+                                            <Link to={u}>[제목]{postData[index].title}</Link>
+                                        </ContentBox>
+                                    ))}
+                                </Grid>
+                                <div>
+                                    {postList}
+                                </div>
+                            </Box>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                {
+                    visible
+
+                    &&
+
+                    <Grid item xs={12} sm={5.4}>
+                        <Box
+                            sx={{
+                                width: '100%',
+                                height: '86vh',
+                                border: '1px solid skyblue',
+                                //margin: '3%'
+                            }}
+                            //ref={move}
+                        >
+                            <Button
+                                style={{
+                                    float: 'right',
+                                    margin: '0.5%',
+                                    padding: 0
+                                }}
+                                ref={move} //이런 입력 , button component에만 적용됨
+                                onClick={Stay}
+                            >
+                                X
+                            </Button>
+                            <div style={{display: 'flex'}}>
+                                <HiddenContentBox data={data}></HiddenContentBox>
+                                <CommentBox data={postData}></CommentBox>
+                            </div>
+                        </Box>
+                    </Grid>
+                }
+            </Grid>
+        );
+    } else {
+        return (
         <Grid container spacing={6}>
             <Grid item xs={12} sm={6.6}>
 
@@ -75,11 +194,11 @@ function ContentGrid(){
                             </Button>
                             profile
 
-                            <ProfileImage/>     {/* 프사 */}
+                            <ProfileImage/> {/* 프사 */}
                             <ProfileContents/>
-                            <MusicBox />
+                            <MusicBox/>
                             <YouTubePlayer/>
-                           
+
 
                         </Box>
                     </Grid>
@@ -89,30 +208,32 @@ function ContentGrid(){
                                 width: '100%',
                                 height: '84vh',
                                 border: '1px solid skyblue',
-                                padding : '1%'
+                                padding: '1%'
                             }}
                         >
 
                             <Grid container spacing={2}>
                                 {/* 하위 component로 전달할 함수 매개변수로 주기 */}
 
-                                {/*서버통신할 때 사용 
+                                {/*서버통신할 때 사용
                                 <ContentBox Move={Move} post={posts}></ContentBox>
                                 */}
 
                                 {/* map 함수를 사용해야 data가 1개씩 전달됨 & data수만큼 글 생성 */}
-                                { img.map((img) => (
-                                   <ContentBox Move={Move} onView={onView} setId={setId} key={img.id} img={img} {...img}></ContentBox>  
+                                {img.map((img) => (
+                                    <ContentBox Move={Move} onView={onView} setId={setId} key={img.id}
+                                                img={img} {...img}></ContentBox>
                                 ))}
                             </Grid>
+
                         </Box>
                     </Grid>
                 </Grid>
             </Grid>
             {
-                visible 
+                visible
 
-                && 
+                &&
 
                 <Grid item xs={12} sm={5.4}>
                     <Box
@@ -131,19 +252,20 @@ function ContentGrid(){
                                 padding: 0
                             }}
                             ref={move} //이런 입력 , button component에만 적용됨
-                            onClick ={Stay}
+                            onClick={Stay}
                         >
                             X
                         </Button>
                         <div style={{display: 'flex'}}>
-                        <HiddenContentBox data={data}></HiddenContentBox>
-                        <CommentBox data={postData}></CommentBox>
+                            <HiddenContentBox data={data}></HiddenContentBox>
+                            <CommentBox data={postData}></CommentBox>
                         </div>
                     </Box>
                 </Grid>
             }
         </Grid>
-    );
+        );
+    }
 
 }
 
