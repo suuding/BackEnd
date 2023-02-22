@@ -34,35 +34,6 @@ function MainPage(props) {
 
     const [data, setData] = useState(null);
 
-    useEffect(() => {
-        axios.get("http://localhost:8080/api/posts/list")
-            .then(res => {
-                setData(res.data);
-            })
-    }, []);
-
-    if (data) {
-        let urlList = [];
-        for (let i=0; i<data.length ; i++) {
-            urlList.push('/posts/'+data[i].id);
-        }
-
-        const postList = urlList.map((u, index) =>
-            <Link to={u} >[제목]{data[index].title}</Link> );
-
-        return (
-            <div>
-                <>
-                    {postList}
-                </>
-                {isFull && <MainPageContent style={{marginTop: '0.2%'}}> </MainPageContent>}
-                {isLarge && <MainPageContent style={{marginTop: '2%'}}></MainPageContent>}
-                {isLargeMedium && <MainPageContent style={{marginTop: '3.3%'}}></MainPageContent>}
-                {isMedium && <MainPageContent style={{marginTop: '6%'}}></MainPageContent>}
-                {isSmall && <MainPageContent style={{marginTop: '8%'}}></MainPageContent>}
-            </div>
-        );
-    } else {
         return (
             <div>
                 {isFull && <MainPageContent style={{marginTop: '0.2%'}}> </MainPageContent>}
@@ -72,8 +43,6 @@ function MainPage(props) {
                 {isSmall && <MainPageContent style={{marginTop: '8%'}}></MainPageContent>}
             </div>
         );
-    }
-
 }
 
 export default MainPage;

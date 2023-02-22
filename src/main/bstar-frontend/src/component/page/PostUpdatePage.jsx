@@ -45,27 +45,30 @@ function PostUpdatePage(props) {
     const [data, setData] = useState(null);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [img, setImg] = useState("");
 
     const {postId} = useParams();
-    const url = "http://localhost:8080/api/posts/"+postId;
+    const posturl = "http://localhost:8080/api/posts/"+postId;
+    const pictureurl = "http://localhost:8080/api/pictures/"+postId;
 
     const onAddWrite = () => {
     }
 
-
-
     useEffect(() => {
-        axios.get(url)
+        axios.get(posturl)
             .then((res) => {
                 setData(res.data);
                 setTitle(res.data.title);
                 setContent(res.data.content);
             })
+        axios.get(pictureurl)
+            .then((res) => {
+                setData(res.data);
+            })
+
     }, []);
 
     function onUpdate() {
-        axios.put(url,
+        axios.put(posturl,
             JSON.stringify({
                 title: title,
                 content: content
@@ -83,7 +86,7 @@ function PostUpdatePage(props) {
     }
 
     function onDelete() {
-        axios.delete(url)
+        axios.delete(posturl)
             .then((res) => {
             alert("글을 삭제하였습니다");
             console.log(res.data);
@@ -92,7 +95,7 @@ function PostUpdatePage(props) {
             console.log("글 삭제에 실패하였습니다.");
         });
     }
-    if (data) {
+
         return (
             <Wrapper>
                 <Container>
@@ -107,7 +110,7 @@ function PostUpdatePage(props) {
                         onChange={(e) => {
                             setContent(e.target.value);
                         }}
-                        autoSize={{minRows: 1, maxRows: 1}}/>
+                        autoSize={{minRows: 3, maxRows: 3}}/>
 
 
                     <Button
@@ -154,7 +157,6 @@ function PostUpdatePage(props) {
                 </Container>
             </Wrapper>
         );
-    }
 }
 
 export default PostUpdatePage;

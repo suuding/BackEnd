@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 public class PostsUpdateRequestDto {
 
     private String title;
-
     private String content;
 
     @Builder

@@ -6,14 +6,12 @@ import com.bstarbackend.bstar.web.dto.PostsResponseDto;
 import com.bstarbackend.bstar.web.dto.PostsSaveRequestDto;
 import com.bstarbackend.bstar.web.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@Slf4j
 public class PostsController {
 
     private final PostsService postsService;
@@ -31,8 +29,6 @@ public class PostsController {
 
         return postsService.save(requestDto);
     }
-
-    //수정 페이지 요청
 
     //글 수정
     @PutMapping("/api/posts/{id}")
