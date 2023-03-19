@@ -3,17 +3,17 @@ import Sidebar from './Sidebar';
 import { Box, Select, FormControl, MenuItem, Pagination } from '@mui/material';
 import { Container } from '@mui/system';
 import { SearchRounded } from '@mui/icons-material';
-import { useNavigate } from "react-router-dom";
 import SearchList from '../list/SearchList';
 import data from "../../data.json"
-import { useStore, useSideState, useVisible } from "../ui/CustomHooks";
-import { Search, SearchIconWrapper, SearchInput, StyledTabs, StyledResultText, 
+import { useStore, useSideState } from "../ui/CustomHooks";
+import { Search, SearchIconWrapper, SearchInput, StyledTabs, StyledResultText,
     StyledTab, TabPanel } from "../ui/StyledSearchPage.jsx";
+import PostDialog from '../ui/friend/PostDialog';
 import posts from "./main/images";
 
 function SearchPage(props) {
-    
-    const [keyword, setKeyword] = useStore(); //입력 중인 검색어 
+
+    const [keyword, setKeyword] = useStore(); //입력 중인 검색어
     const [word, setWord] = useState(); //enter 후 입력된 검색어
     const [state, setState] = useSideState(); //사이드 바 상태
     const [tabState, setTabState] = useState(0); //제목, 사용자 탭 상태
@@ -21,17 +21,23 @@ function SearchPage(props) {
 
     const [page, setPage] = useState(1); //현재 페이지
     const pageLimit = 5; //한 페이지에 나타날 검색 결과 개수
-    const offset = (page - 1) * pageLimit; 
+    const offset = (page - 1) * pageLimit;
     const [postCount, setPostCount] = useState(0); //검색 결과 개수 받아오기
     //const [visible, setVisible] = useVisible(false);
     const [resultTitleInner, setResultTitleInner] = useState([]); //제목 블로그 내부 검색 결과
     const [resultTitleTotal, setResultTitleTotal] = useState([]); //제목 전체 검색 결과
     const [resultUser, setResultUser] = useState([]); //사용자 검색 결과
 
-    const navigate = useNavigate();
-    //const [email, setEmail] = useState();
     const email = "1@gmail.com"; //임시로 설정
-    
+    const [open, setOpen] = useState(false);
+    const [select, setSelect] = useState(-1);
+
+    useEffect(() => {
+        if(select !== -1){
+            setOpen(true);
+        }
+    }, [select])
+
     useEffect(() => {
         setWord(keyword);
         setTabState(0);
@@ -59,8 +65,7 @@ function SearchPage(props) {
     //블로그 내부 검색
     const getResultTitleInner = () => {
         let newResult = [];
-        posts && posts.map((post) => {
-            //로그인한 email과 post의 email이 동일하고 post의 title에 검색어가 포함된 post를 들고오기 !
+        posts && posts.map((post, index) => {
             if(post.title.includes(word) && email === post.email){
                 return newResult = newResult.concat(post);
             }
@@ -72,8 +77,7 @@ function SearchPage(props) {
     //전체 검색
     const getResultTitleTotal = () => {
         let newResult = [];
-        posts && posts.map((post) => {
-            //post의 title에 검색어가 포함된 post를 들고오기 !
+        posts && posts.map((post, index) => {
             if(post.title.includes(word)){
                 return newResult = newResult.concat(post);
             }
@@ -85,9 +89,8 @@ function SearchPage(props) {
     //사용자 검색
     const getResultUser = () => {
         let newResult = [];
-        data && data.map((person) => {
+        data && data.map((person, index) => {
             if(person.nickName.includes(word)){
-                //user의 nickName에 검색어가 포함된 user를 들고오기 !
                 return newResult = newResult.concat(person);
             }
         })
@@ -96,12 +99,12 @@ function SearchPage(props) {
     }
 
     const onSelectResult = () => {
-        if(tabState === 1) //사용자 선택
+        if(tabState === 1)
             return resultUser;
         else{
-            if(toggleState === "블로그 내부 검색") //제목 & 블로그 내부
+            if(toggleState === "블로그 내부 검색")
                 return resultTitleInner;
-            else //제목 & 전체
+            else
                 return resultTitleTotal;
         }
     }
@@ -120,12 +123,12 @@ function SearchPage(props) {
     return (
         <Box>
             <Sidebar/>
-            <Container 
-                maxWidth='md' 
+            <Container
+                maxWidth='md'
                 sx={{
-                    display: 'flex', 
-                    justifyContent: 'center', 
-                    alignItems: 'center', 
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     flexDirection: 'column'
                 }}>
                 <Box sx={{width: '50%', margin: '30px'}}>
@@ -133,7 +136,7 @@ function SearchPage(props) {
                         <SearchIconWrapper>
                             <SearchRounded />
                         </SearchIconWrapper>
-                        <SearchInput 
+                        <SearchInput
                             placeholder='검색어를 입력하세요.'
                             value={keyword}
                             onChange={(e) => {
@@ -147,89 +150,83 @@ function SearchPage(props) {
                                     else{
                                         setWord(keyword);
                                         setState(state + 1 % 10);
-                                    } 
-                                }   
+                                    }
+                                }
                             }}
                         />
                     </Search>
-                </Box>  
+                </Box>
                 {(state !== 0)?
-                <Box 
-                    sx={{
-                        width: '100%', 
-                        height: '80vh', 
-                        typography: 'body1', 
-                        marginTop:'10px'
-                    }}>
-                    <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-                        <StyledTabs 
-                            value={tabState} 
-                            onChange={(e, newValue) => setTabState(newValue)}
-                        >
-                            <StyledTab label="제목" />
-                            <StyledTab label="사용자" />
-                        </StyledTabs>
-                    </Box>
-                    <TabPanel value={tabState} index={0}>
-                        <Box>
-                            <Box sx={{display: 'inline-block'}}>
-                                <FormControl>
-                                    <Select
-                                        value={toggleState}
-                                        onChange={(e) => {setToggleState(e.target.value)}}
-                                        displayEmpty
-                                        sx={{fontSize: '14px', height: '30px'}}
-                                    >
-                                        <MenuItem value="블로그 내부 검색">블로그 내부 검색</MenuItem>
-                                        <MenuItem value="전체 검색">전체 검색</MenuItem>
-                                    </Select>
-                                </FormControl>  
-                            </Box>
-                            {toggleState === "블로그 내부 검색"?
-                                <StyledResultText>
-                                    '{word}' 에 대한 블로그 내부 검색 결과 {postCount}건
-                                </StyledResultText>
-                                :
-                                <StyledResultText>
-                                    '{word}' 에 대한 전체 검색 결과 {postCount}건
-                                </StyledResultText>
-                            }
-                        </Box>
-                    </TabPanel>
-                    <TabPanel value={tabState} index={1}>
-                        {word}' 에 대한 사용자 검색 결과 {postCount}건
-                    </TabPanel>
-                    <Box 
+                    <Box
                         sx={{
-                            width: '100%', 
-                            margin: '10px 0', 
-                            display: 'flex', 
-                            flexDirection: 'column', 
-                            justifyContent: 'center', 
-                            alignItems: 'center'
+                            width: '100%',
+                            height: '80vh',
+                            typography: 'body1',
+                            marginTop:'10px'
                         }}>
-                        <SearchList 
-                            list={onSelectResult()} //검색 결과인 게시글 목록
-                            offset={offset}
-                            pageLimit={pageLimit}
-                            tabState={tabState}
-                            onClickItem={(item) => {
-                                navigate(`/main`); //선택된 글의 post-id, email을 가져와서 이동
-                                //setVisible(true);
-                                onScroll();
-                            }}
-                        /> 
-                        <Pagination // 페이지 수 나타냄
-                            count={Math.floor((postCount - 1) / pageLimit + 1)} 
-                            onChange={(e) => onChangePage(e)} 
-                            color="primary" 
-                            variant="outlined" 
-                            sx={{margin: '20px'}}
-                        />      
-                    </Box>  
-                </Box>: <Box></Box>}
+                        <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+                            <StyledTabs
+                                value={tabState}
+                                onChange={(e, newValue) => setTabState(newValue)}
+                            >
+                                <StyledTab label="제목" />
+                                <StyledTab label="사용자" />
+                            </StyledTabs>
+                        </Box>
+                        <TabPanel value={tabState} index={0}>
+                            <Box>
+                                <Box sx={{display: 'inline-block'}}>
+                                    <FormControl>
+                                        <Select
+                                            value={toggleState}
+                                            onChange={(e) => {setToggleState(e.target.value)}}
+                                            displayEmpty
+                                            sx={{fontSize: '14px', height: '30px'}}
+                                        >
+                                            <MenuItem value="블로그 내부 검색">블로그 내부 검색</MenuItem>
+                                            <MenuItem value="전체 검색">전체 검색</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Box>
+                                {(toggleState === "블로그 내부 검색")?
+                                    <StyledResultText>'{word}' 에 대한 블로그 내부 검색 결과 {postCount}건</StyledResultText>
+                                    : <StyledResultText>'{word}' 에 대한 전체 검색 결과 {postCount}건</StyledResultText>}
+                            </Box>
+                        </TabPanel>
+                        <TabPanel value={tabState} index={1}>'{word}' 에 대한 사용자 검색 결과 {postCount}건</TabPanel>
+                        <Box
+                            sx={{
+                                width: '100%',
+                                margin: '10px 0',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                            <SearchList
+                                list={onSelectResult()} //검색 결과인 게시글 목록
+                                offset={offset}
+                                pageLimit={pageLimit}
+                                tabState={tabState}
+                                setSelect={setSelect}
+                            />
+                            <Pagination // 페이지 수 나타냄
+                                count={Math.floor((postCount - 1) / pageLimit + 1)}
+                                onChange={(e) => onChangePage(e)}
+                                color="primary"
+                                variant="outlined"
+                                sx={{margin: '20px'}}
+                            />
+                        </Box>
+                        <PostDialog
+                            open={open}
+                            setOpen={setOpen}
+                            select={select}
+                            setSelect={setSelect}
+                        />
+                    </Box>: <Box></Box>}
             </Container>
-        </Box>       
+        </Box>
     );
 }
 

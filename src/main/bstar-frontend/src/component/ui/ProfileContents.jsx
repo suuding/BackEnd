@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-
-import { styled } from "@mui/material/styles";
-
 import data from "../../data.json";
-import { textAlign } from "@mui/system";
 
 function ProfileContents(props) {
   const email = "1@gmail.com"; //임시로 설정

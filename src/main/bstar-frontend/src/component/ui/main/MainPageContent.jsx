@@ -10,7 +10,7 @@ function MainPageContent(props) {
         <Box
             className="box"
             sx={{
-                width: '172%',
+                width: '94%',
                 height: '90vh',
                 border: '1px solid skyblue',
                 padding: '3%',

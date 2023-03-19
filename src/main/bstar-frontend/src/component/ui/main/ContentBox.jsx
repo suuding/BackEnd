@@ -12,7 +12,7 @@ function ContentBox(props){ // 상위 component에서 전달한 이름 그대로
     const [visible2, setVisible2] = useState(true);
 
     return(
-        <Grid item xs={12} sm={2.4}>
+        <Grid item xs={12} sm={3}>
             <Box
                 sx={{
                     width: '100%',
@@ -25,11 +25,11 @@ function ContentBox(props){ // 상위 component에서 전달한 이름 그대로
                         backgroundColor: 'lightgray'
                     }
                 }}
-                onMouseOver={()=>{ 
+                onMouseOver={()=>{
                     setVisible1(true); // 마우스 올리면 Button 보이게 
                     setVisible2(false); // 마우스 올리면 글 안보이게 
                 }}
-                onMouseOut={()=>{ 
+                onMouseOut={()=>{
                     setVisible1(false); // 마우스 내리면 Button 안보이게
                     setVisible2(true); // 마우스 내리면 글 보이게
                 }}
@@ -44,7 +44,7 @@ function ContentBox(props){ // 상위 component에서 전달한 이름 그대로
                 {
                     visible1
 
-                    && 
+                    &&
 
                     <Button
                         style={{

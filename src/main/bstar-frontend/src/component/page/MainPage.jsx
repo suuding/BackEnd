@@ -1,16 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { useNavigate } from 'react-router-dom';
 import MainPageContent from '../ui/main/MainPageContent';
-import {Link, Router} from "react-router-dom";
-import {Button} from "@mui/material";
-import axios from "axios";
-import styled from "styled-components";
-import {Input} from "antd";
+import '../ui/main/MainPageContent.css';
 
 function MainPage(props) {
-
-    const navigate = useNavigate();
 
     const isFull = useMediaQuery({
         query : "(min-width:1440px)"
@@ -35,12 +28,12 @@ function MainPage(props) {
     const [data, setData] = useState(null);
 
         return (
-            <div>
+            <div className='box'>
                 {isFull && <MainPageContent style={{marginTop: '0.2%'}}> </MainPageContent>}
-                {isLarge && <MainPageContent style={{marginTop: '2%'}}></MainPageContent>}
-                {isLargeMedium && <MainPageContent style={{marginTop: '3.3%'}}></MainPageContent>}
-                {isMedium && <MainPageContent style={{marginTop: '6%'}}></MainPageContent>}
-                {isSmall && <MainPageContent style={{marginTop: '8%'}}></MainPageContent>}
+                {isLarge && <MainPageContent style={{marginTop: '0.5%'}}></MainPageContent>}
+                {isLargeMedium && <MainPageContent style={{marginTop: '1%'}}></MainPageContent>}
+                {isMedium && <MainPageContent style={{marginTop: '1.5%'}}></MainPageContent>}
+                {isSmall && <MainPageContent style={{marginTop: '2%'}}></MainPageContent>}
             </div>
         );
 }

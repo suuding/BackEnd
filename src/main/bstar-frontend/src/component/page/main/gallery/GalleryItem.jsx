@@ -1,15 +1,22 @@
 import React,  {useState} from "react";
-import { Button } from '@mui/material';
 import { Box } from '@mui/material';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import GalleryDialog from "./GalleryDialog";
 import GalleryLike from "./GalleryLike";
+import LeftArrow from "../../../ui/arrow/LeftArrow";
+import RightArrow from "../../../ui/arrow/RightArrow";
 
 const GalleryItem = (props) => {
 
     const { setIndex, index, data, imgs } = props;
     const [open, setOpen] = useState(false);
+
+    const indexBack = () => {
+        setIndex(index-1);
+    }
+
+    const indexForward = () => {
+        setIndex(index+1);
+    }
 
     return (
         <Box
@@ -23,30 +30,13 @@ const GalleryItem = (props) => {
                 //margin: 0
             }}
         >
-                
-            <Button
-                onClick={ () => {
-                    setIndex(index-1);
-                }}
-                sx={{
-                    height: '50vh',
-                    float: 'left',
-                    pr: 0,
-                    pl: 0,
-                    color: 'white',
-                    "&.MuiButton-root:hover":{
-                        color: 'skyblue',
-                        borderColor: 'skyblue'
-                    }
-                }}
-            >
-                <ArrowBackIosIcon/>
-            </Button>
-            
+            <LeftArrow
+                indexBack={indexBack} //전달해주는 props와 이름이 같아야한다.
+            />
             <Box>
-            {/* JSON 객체 배열에서 객체 액세스 하는 방법으로 src변경 */}
-                <img 
-                    src={data.image[index]} 
+                {/* JSON 객체 배열에서 객체 액세스 하는 방법으로 src변경 */}
+                <img
+                    src={data.image[index]}
                     alt={''}
                     style={{
                         width: 'auto',
@@ -61,26 +51,10 @@ const GalleryItem = (props) => {
                 />
                 <GalleryLike/>
             </Box>
-         
-            <Button
-                onClick={ () => {
-                    setIndex(index+1);
-                }}
-                sx={{
-                    height: '50vh',
-                    float: 'right',
-                    pr: 0,
-                    pl: 0,
-                    color: 'white',
-                    "&.MuiButton-root:hover":{
-                        color: 'skyblue',
-                        borderColor: 'skyblue'
-                    }
-                }}
-            >
-                <ArrowForwardIosIcon/>
-            </Button>
-            <GalleryDialog 
+            <RightArrow
+                indexForward={indexForward}
+            />
+            <GalleryDialog
                 data={data}
                 index={index}
                 setIndex={setIndex}

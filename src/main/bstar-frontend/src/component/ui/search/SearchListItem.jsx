@@ -4,7 +4,7 @@ import { AccountCircle } from '@mui/icons-material';
 import data from "../../../data.json";
 
 function SearchListItem(props) {
-    const {item, onClick} = props;
+    const {item, setSelect} = props;
 
     let content = "";
     item.desc.map((desc) => {
@@ -17,20 +17,20 @@ function SearchListItem(props) {
 
     return (
         <Box sx={{padding: '10px 0'}}>
-            <Grid 
-                container 
-                wrap="nowrap" 
-                spacing={2} 
-                onClick={onClick} 
+            <Grid
+                container
+                wrap="nowrap"
+                spacing={2}
+                onClick={() => setSelect(item.id)}
                 sx={{
                     cursor: 'pointer',
                 }}
             >
                 <Grid item>
-                    <img 
-                        src= {item.image[0]} 
-                        alt="" 
-                        width= '160px' 
+                    <img
+                        src= {item.image[0]}
+                        alt=""
+                        width= '160px'
                         height= '160px'
                     />
                 </Grid>
@@ -38,31 +38,31 @@ function SearchListItem(props) {
                     <Typography variant="h6" sx={{margin: '10px 0'}}>{item.title}</Typography>
                     <Typography noWrap>{content}</Typography>
                     <Box sx={{margin: '10px 0'}}>
-                        {person.image? 
-                            <img 
-                                src={person.image} 
-                                alt="" 
+                        {person.image?
+                            <img
+                                src={person.image}
+                                alt=""
                                 style={{
-                                    width: '30px', 
-                                    height: '30px', 
-                                    borderRadius: '50%', 
+                                    width: '30px',
+                                    height: '30px',
+                                    borderRadius: '50%',
                                     verticalAlign: '-10px'
                                 }}
                             />
-                            :<AccountCircle 
-                                style={{ 
-                                    color: 'grey', 
-                                    width: '30px', 
-                                    height: '30px', 
-                                    display:'inline-block', 
+                            :<AccountCircle
+                                style={{
+                                    color: 'grey',
+                                    width: '30px',
+                                    height: '30px',
+                                    display:'inline-block',
                                     verticalAlign: '-10px'
                                 }}
                             />
                         }
-                        <Typography 
-                            variant="body1" 
+                        <Typography
+                            variant="body1"
                             sx={{
-                                display:'inline-block', 
+                                display:'inline-block',
                                 marginLeft: '10px'
                             }}
                         >
@@ -71,7 +71,7 @@ function SearchListItem(props) {
                     </Box>
                 </Grid>
             </Grid>
-        </Box>    
+        </Box>
     );
 }
 

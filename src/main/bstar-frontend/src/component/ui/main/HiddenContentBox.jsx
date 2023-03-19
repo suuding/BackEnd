@@ -9,18 +9,18 @@ function HiddenContentBox(props) {
     return(
         <Box
             sx={{
-                width: '56%',
-                height: '86vh',
+                width: '100%',
+                height: '100%',
                 border: '1px solid skyblue'
             }}
         >
-            
+
             <Gallery data={data}/>
-            
-            
-            
+
+
+
         </Box>
-        
+
     );
 }
 
