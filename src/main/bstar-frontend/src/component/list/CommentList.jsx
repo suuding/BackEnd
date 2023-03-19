@@ -14,16 +14,33 @@ const Wrapper = styled.div`
         }
     }
 `;
-
+const Nav = styled.nav`
+  display: flex;
+  overflow: auto;
+  height: 27vw;
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.4);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+  }
+`;
 function CommentList(props) {
     const { comments } = props;
 
     return (
-        <Wrapper>
-            {comments?.map((comment, index) => {
-                return <CommentListItem key={comment.id} comment={comment} />
-            })}
-        </Wrapper>
+        <Nav>
+            <Wrapper>
+                {comments?.map((comment, index) => {
+                    return <CommentListItem key={comment.email} comment={comment} />
+                })}
+            </Wrapper>
+        </Nav>
+
     );
 }
 

@@ -31,6 +31,7 @@ const Wrapper = styled.div`
 `;
 
 const WrapperInside = styled.div`
+<<<<<<< HEAD
   padding: 16px;
   width: calc(100% - 32px);
   display: flex;
@@ -47,15 +48,40 @@ const WrapperBtn = styled.div`
   align-items: center;
   justify-content: center;
   background-color: white;
+=======
+    padding: 16px;
+    width: calc(100% - 32px);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+`;
+
+const WrapperBtn = styled.div`
+    padding: 16px;
+    width: calc(100% - 32px);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+>>>>>>> 8a3991aa3a41686a6496a223b2af6bb25e0549e7
 
 `;
 
 
 const Container = styled.div`
+<<<<<<< HEAD
   width: 200vw;
   border: 1px solid black;
   background-color: white;
   max-width: 720px;
+=======
+    width: 200vw;
+    border: 1px solid black;
+    background-color: white;
+    max-width: 720px;
+>>>>>>> 8a3991aa3a41686a6496a223b2af6bb25e0549e7
   & > * {
     :not(:last-child) {
       margin-bottom: 16px;
@@ -128,7 +154,11 @@ function WritePage(props) {
             newContent.id=index;
             newContent.content=contentChange;
             console.log(newContent); //{id: , content: }
+<<<<<<< HEAD
             setContentList([...contentList, newContent]);
+=======
+            setContentList([newContent, ...contentList]);
+>>>>>>> 8a3991aa3a41686a6496a223b2af6bb25e0549e7
         }
     };
 
@@ -148,7 +178,14 @@ function WritePage(props) {
             let formData = new Object();
             formData.postId = 1; //postid 넣기
             formData.pictureUrl = i+1;
+<<<<<<< HEAD
             formData.pictureContent = contentList[i].content;
+=======
+            /*  if (i==contentList.length-1)
+                  formData.pictureContent = contents;
+              else*/
+            formData.pictureContent = contentList[i];
+>>>>>>> 8a3991aa3a41686a6496a223b2af6bb25e0549e7
 
             formArray.push(formData);
         }

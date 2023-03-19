@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import GalleryList from './GalleryList';
 import GalleryDesc from './GalleryDesc';
 import './GalleryCss.css'
 import GalleryItem from './GalleryItem';
@@ -18,10 +17,7 @@ function Gallery(props){
         <div className='galleryTotal'>
             <GalleryModify 
                 className='galleryModify'
-                data={data} 
-                /*style={{
-                    float: 'right'
-                }}*/
+                data={data}
             />
             <div className='gallery'>
 

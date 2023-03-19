@@ -7,6 +7,7 @@ const handleFileOnChange = async (file) => {
         const resultFile = new File([compressedFile], compressedFile.name, {
             type: compressedFile.type,
         });
+
         return resultFile;
     } catch (error) {
         console.log(error);
@@ -22,10 +23,14 @@ const handleUrlOnChange = async(compressedFile) => {
     }
 };
 
+
+
 const handleResize = async (file) => {
     const newFile = await handleFileOnChange(file);
     const newUrl = await handleUrlOnChange(newFile);
-    return { file: newFile, id: newFile.lastModified, url: newUrl };
+    const content = "";
+
+    return { file: newFile, id: newFile.lastModified, url: newUrl, };
 };
 
 export { handleFileOnChange, handleUrlOnChange, handleResize };
