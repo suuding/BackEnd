@@ -19,11 +19,14 @@ import java.util.stream.Collectors;
 public class PicturesService {
 
     private final PicturesRepository picturesRepository;
-
+    private Long postId = 0L;
     @Transactional
     public Long save(List<PicturesSaveRequestDto> requestDto) {
+        postId = postId + 1;
+
         try {
             for (PicturesSaveRequestDto picturesSaveRequestDto : requestDto) {
+                picturesSaveRequestDto.setPostId(postId);
                 picturesRepository.save(picturesSaveRequestDto.toEntity());
             }
         } catch (Exception e) {
@@ -63,10 +66,12 @@ public class PicturesService {
 
     @Transactional
     public void delete(Long id) {
-        Pictures pictures = picturesRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("해당 게시글이 없습니다. id="+id));
+        List<Pictures> pictures = picturesRepository.findByPostId(id);
 
-        picturesRepository.delete(pictures);
+        for (int i=0;i<pictures.toArray().length;i++) {
+            picturesRepository.delete(pictures.get(i));
+        }
+
     }
 
 }

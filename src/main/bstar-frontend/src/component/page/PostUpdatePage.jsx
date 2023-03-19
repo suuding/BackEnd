@@ -8,6 +8,8 @@ import { CountertopsSharp } from "@mui/icons-material";
 import DetailList from "../list/DetailList"
 import { Input } from "antd"
 import axios from "axios";
+import * as resize from "../ui/resize";
+import Sidebar from "./Sidebar";
 
 //화면의 중앙에 위치시킴
 const Wrapper = styled.div`
@@ -17,6 +19,15 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const WrapperBtn = styled.div`
+    padding: 16px;
+    width: calc(100% - 32px);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 `;
 
 const Container = styled.div`
@@ -30,14 +41,6 @@ const Container = styled.div`
   }
 `;
 
-const CreateListDiv = styled.div`
-  padding: 3rem;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`
-
 const { TextArea } = Input
 
 function PostUpdatePage(props) {
@@ -46,17 +49,20 @@ function PostUpdatePage(props) {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
+    const [imageList, setImageList] = useState([]);
+    const [contentList, setContentList] = useState([]);
+    const [contentChange, setContentChange] = useState("");
+    const [contents, setContents] = useState("");
+
     const {postId} = useParams();
+    let formArray = new Array();
+
     const posturl = "http://localhost:8080/api/posts/"+postId;
     const pictureurl = "http://localhost:8080/api/pictures/"+postId;
-
-    const onAddWrite = () => {
-    }
 
     useEffect(() => {
         axios.get(posturl)
             .then((res) => {
-                setData(res.data);
                 setTitle(res.data.title);
                 setContent(res.data.content);
             })
@@ -67,7 +73,70 @@ function PostUpdatePage(props) {
 
     }, []);
 
+    const getImageList = (newImageList) => {
+        setImageList(newImageList);
+    };
+
+    const getContentList = (newContentList) => {
+        setContentList(newContentList);
+    }
+
+    const uploadFile = async (e) => {
+        let fileArr = e.target.files;
+        let imageListLength = imageList.length;
+        let filesLength = fileArr.length > 10 ? 10 : fileArr.length; //최대 10개
+        if(imageListLength + filesLength > 10) {
+            alert('이미지는 10장을 초과할 수 없습니다.');
+            return;
+        }
+
+        //프리뷰
+        for (let i=0; i<filesLength; i++){
+            let newImage = await resize.handleResize(fileArr[i]);
+            setImageList((imageList) => [...imageList, newImage]);
+        }
+        e.target.value = '';
+
+        console.log(imageList);
+        console.log(contentList);
+    };
+
+    const removeImage = (id) => {
+        let newList = imageList.filter((image) => image.id !== id);
+        let newContentList = contentList.filter((content) => content.id != id );
+        getImageList(newList);
+        getContentList(newContentList);
+        return;
+    };
+
+    const handleChange = (index, e) => {
+        if(e.target.name === "contentinput") {
+            let newContent = new Object();
+            newContent.id=index;
+            newContent.content=contentChange;
+            console.log(newContent); //{id: , content: }
+            setContentList([...contentList, newContent]);
+        }
+    };
+
+    const onChangeContent = (e) => {
+        setContentChange(e.target.value);
+    }
+
     function onUpdate() {
+
+        for (let i=0; i<contentList.length; i++) {
+            let formData = new Object();
+            formData.postId = postId; //postid 넣기
+            formData.pictureUrl = i+1;
+            formData.pictureContent = contentList[i].content;
+
+            formArray.push(formData);
+        }
+
+        let sjson = JSON.stringify(formArray);
+        console.log(sjson);
+
         axios.put(posturl,
             JSON.stringify({
                 title: title,
@@ -83,6 +152,16 @@ function PostUpdatePage(props) {
         }).catch(error => {
             console.log("실패");
         });
+        axios.put(pictureurl,
+            sjson,
+            {
+                headers:
+                    {"Content-Type": 'application/json'}
+            }).then((res) => {
+            console.log(res.data);
+        }).catch(error => {
+            console.log("실패");
+        });
     }
 
     function onDelete() {
@@ -94,10 +173,17 @@ function PostUpdatePage(props) {
         }).catch(error => {
             console.log("글 삭제에 실패하였습니다.");
         });
+        axios.delete(pictureurl)
+            .then((res) => {
+                console.log(res.data);
+            }).catch(error => {
+            console.log("글 삭제에 실패하였습니다.");
+        });
     }
 
         return (
             <Wrapper>
+                <Sidebar/>
                 <Container>
                     <TextArea
                         type="text" value={title}
@@ -111,8 +197,34 @@ function PostUpdatePage(props) {
                             setContent(e.target.value);
                         }}
                         autoSize={{minRows: 3, maxRows: 3}}/>
+                    <div>
+                        {data && data.map(p => {
+                            return (
+                                <TextArea type="text" value={p.pictureContent} name="contentinput" onChange = {e => handleChange(e)}></TextArea>
+                                //<button onClick={() => removeImage(image.id, content.id)}>삭제</button>
+                            );
+                        })}
+                    </div>
+                    <input
+                        type="file"
+                        id="upload-file"
+                        accept="image/*"
+                        multiple
+                        onChange={uploadFile}/>
+                    { imageList.map((image, index) => {
+                        return(
+                            <div key={image.id}>
+                                <Wrapper>
+                                    <img alt={image.id} src={image.url}/>
+                                    <TextArea type="text" id={image.id} name="contentinput" onBlur = {e => handleChange(image.id, e)} onChange = {(event) => onChangeContent(event)} autoSize={{ minRows: 3, maxRows: 4}}/>
+                                    <button onClick={() => removeImage(image.id)}>삭제</button>
+                                </Wrapper>
+                            </div>
+                        );
+                    })}
+                </Container>
 
-
+                <WrapperBtn>
                     <Button
                         type="submit"
                         variant="outlined"
@@ -154,7 +266,7 @@ function PostUpdatePage(props) {
                         }}
                         onClick={onDelete}>삭제하기</Button>
 
-                </Container>
+                </WrapperBtn>
             </Wrapper>
         );
 }

@@ -13,20 +13,9 @@ import java.util.List;
 public class PicturesController {
 
     private final PicturesService picturesService;
-    private Long postId = 0L;
 
     @PostMapping("/api/pictures")
     public Long save(@RequestBody List<PicturesSaveRequestDto> requestDto) {
-        postId = postId + 1;
-        try {
-            for (PicturesSaveRequestDto picturesSaveRequestDto : requestDto) {
-                //System.out.println("picturesSaveRequestDto = " + picturesSaveRequestDto.getPictureUrl());
-                picturesSaveRequestDto.setPostId(postId);
-                System.out.println("postId = " + picturesSaveRequestDto.getPostId());
-            }
-        } catch (Exception e) {
-            System.out.println("e = " + e);
-        }
 
         return picturesService.save(requestDto);
     }

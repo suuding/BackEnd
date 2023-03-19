@@ -30,14 +30,6 @@ const Container = styled.div`
     }
 `;
 
-const CreateListDiv = styled.div`
-  padding: 3rem;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-`
-
 const { TextArea } = Input
 
 function PostPage(props) {
