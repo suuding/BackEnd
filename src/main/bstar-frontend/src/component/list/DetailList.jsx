@@ -1,9 +1,5 @@
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components"
-import { Button } from '@mui/material'
-import { Link } from "react-router-dom"
-import Axios from "axios"
-import { PlusCircleOutlined } from "@ant-design/icons"
 import { Input } from "antd"
 
 const DetailDiv = styled.div`

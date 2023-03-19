@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import data from "../../data.json";
 
 const Wrapper = styled.div`
-    width: calc(100% - 32px);
+    width: 27vw;
     padding: 1px;
     display: flex;
     flex-direction: column;
@@ -18,17 +19,41 @@ const Wrapper = styled.div`
 
 `;
 
-const ContentText = styled.p`
-    font-size: 14px;
+const ProfileId = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
 `;
+
+const ContentText = styled.p`
+    font-size: 0.8vw;
+`;
+
+
+
+
 
 function CommentListItem(props) {
     const { comment } = props;
 
+    const person = data.find((person) => {
+        return person.email === comment.email;
+    });
+
     return (
-        <Wrapper>
-            <ContentText>{ comment.content }</ContentText>
-        </Wrapper>
+        <div>
+            <ProfileId>
+                <img src={person.image}
+                     style={{ margin: "0.05vw", width: "1vw", height: "1vw" }}
+                ></img>
+                <div> { comment.email } </div>
+            </ProfileId>
+
+            <Wrapper>
+                <ContentText>{ comment.content }</ContentText>
+            </Wrapper>
+        </div>
+
     );
 }
 
