@@ -1,3 +1,6 @@
+# 시연 영상
+<img src = "https://user-images.githubusercontent.com/94467302/226165875-eadd2807-c3cd-4e32-b4d2-bb39d5ca2c1c.mp4">
+
 <h1>react.js, gradle, springboot 연동 방법</h1>
 
 0. node js 설치
